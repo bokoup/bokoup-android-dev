@@ -10,15 +10,16 @@ import com.bokoup.lib.resourceFlowOf
 import com.bokoup.merchantapp.domain.PromoRepo
 import com.bokoup.merchantapp.domain.SettingsRepo
 import com.bokoup.merchantapp.model.AppId
-import com.bokoup.merchantapp.model.TxApiResponse
 import com.bokoup.merchantapp.model.PromoType
 import com.bokoup.merchantapp.model.PromoWithMetadata
+import com.bokoup.merchantapp.model.TxApiResponse
 import com.dgsd.ksol.core.model.KeyPair
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.net.URL
 import java.net.URLEncoder
 import javax.inject.Inject
@@ -30,11 +31,9 @@ class PromoViewModel @Inject constructor(
     private val settingsRepo: SettingsRepo
 ) : ViewModel() {
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO
-
     val promoSubscription = promoRepo.promoSubscriptionFlow
-
-    val promosConsumer = ResourceFlowConsumer<List<PromoWithMetadata>>(viewModelScope)
-    val appIdConsumer = ResourceFlowConsumer<AppId>(viewModelScope)
+    private val promosConsumer = ResourceFlowConsumer<List<PromoWithMetadata>>(viewModelScope)
+    private val appIdConsumer = ResourceFlowConsumer<AppId>(viewModelScope)
     val createPromoConsumer = ResourceFlowConsumer<TxApiResponse>(viewModelScope)
     val groupSeedConsumer = ResourceFlowConsumer<String>(viewModelScope)
     val keyPairConsumer = ResourceFlowConsumer<KeyPair?>(viewModelScope)
@@ -56,11 +55,14 @@ class PromoViewModel @Inject constructor(
         qrCodeConsumer.collectFlow(
             resourceFlowOf {
                 val url = URL(
-                    "http://99.91.8.130:8080/promo/mint/$mintString/${
-                        URLEncoder.encode(
-                            message,
-                            "utf-8"
-                        )
+                    //http://99.91.8.130:8080
+                    "https://tx.api.bokoup.dev/promo/mint/$mintString/${
+                        withContext(Dispatchers.IO) {
+                            URLEncoder.encode(
+                                message,
+                                "utf-8"
+                            )
+                        }
                     }"
                 )
                 val content = "solana:$url"

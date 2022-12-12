@@ -1,5 +1,6 @@
 package com.bokoup.customerapp.ui.approve
 
+import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -60,6 +61,7 @@ fun ApproveContent(
             }
             if (signature != null) {
                 Text(text = "Confirmed: $signature", modifier = Modifier.padding(vertical = 16.dp))
+                Log.d("tagsig","$signature")
             }
         }
 

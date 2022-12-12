@@ -3,6 +3,7 @@ package com.bokoup.merchantapp.ui.promo
 import android.content.Intent
 import android.net.Uri
 import android.provider.MediaStore
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.*
@@ -15,6 +16,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
@@ -147,8 +149,8 @@ fun CreatePromoCard(
                                     Intent.ACTION_OPEN_DOCUMENT,
                                     MediaStore.Images.Media.EXTERNAL_CONTENT_URI
                                 ).apply {
-                                        addCategory(Intent.CATEGORY_OPENABLE)
-                                    }
+                                    addCategory(Intent.CATEGORY_OPENABLE)
+                                }
                                 launcher.launch(intent)
                             }) {
                                 Text("Select Image")
@@ -165,21 +167,24 @@ fun CreatePromoCard(
                             )
 
                         }
-                        TextField(value = name,
+                        TextField(
+                            value = name,
                             onValueChange = { text -> name = text },
                             label = { Text("Name") },
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(vertical = 4.dp)
                         )
-                        TextField(value = symbol,
+                        TextField(
+                            value = symbol,
                             onValueChange = { text -> symbol = text },
                             label = { Text("Symbol") },
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(vertical = 4.dp)
                         )
-                        TextField(value = description,
+                        TextField(
+                            value = description,
                             onValueChange = { text -> description = text },
                             label = { Text("Description") },
                             maxLines = 3,
@@ -188,7 +193,8 @@ fun CreatePromoCard(
                                 .height(120.dp)
                                 .padding(vertical = 4.dp)
                         )
-                        TextField(value = memo,
+                        TextField(
+                            value = memo,
                             onValueChange = { text -> memo = text },
                             label = { Text("Memo") },
                             modifier = Modifier
@@ -197,7 +203,8 @@ fun CreatePromoCard(
                         )
                     }
                     Column(modifier = Modifier.weight(0.5f)) {
-                        TextField(value = maxMint,
+                        TextField(
+                            value = maxMint,
                             onValueChange = { text -> maxMint = text },
                             label = { Text("Max issue") },
                             modifier = Modifier
@@ -205,7 +212,8 @@ fun CreatePromoCard(
                                 .padding(vertical = 4.dp),
                             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
                         )
-                        TextField(value = maxBurn,
+                        TextField(
+                            value = maxBurn,
                             onValueChange = { text -> maxBurn = text },
                             label = { Text("Max redeem") },
                             modifier = Modifier
@@ -296,7 +304,12 @@ fun CreatePromoCard(
                         .padding(4.dp),
                     horizontalArrangement = Arrangement.Center
                 ) {
-                    Button(enabled = (pickedImageUri != null) && name.text.isNotBlank() && symbol.text.isNotBlank() && description.text.isNotBlank(),
+                    /**
+                     * @user --seema
+                     * @date -- 29/11/2022
+                     * @description --add slected user type when user type is
+                     */
+                    Button(enabled = (pickedImageUri != null) && name.text.isNotBlank() && symbol.text.isNotBlank() && description.text.isNotBlank()&& selectedPromoType.isNotBlank(),
                         onClick = {
                             val promo = when (selectedPromoType) {
                                 "BuyXCurrencyGetYPercent" -> {
@@ -328,10 +341,14 @@ fun CreatePromoCard(
                                 }
                                 else -> {
                                     throw Exception("Selected promo type does not exist")
+
                                 }
                             }
-                            createPromo(promo, pickedImageUri!!, memo.text, "_payer", "_gropSeed")
-                            setCardState(false)
+
+                                createPromo(promo, pickedImageUri!!, memo.text, "_payer", "_gropSeed")
+                                setCardState(false)
+
+
                         }) {
                         Text("Create Promo")
                     }
@@ -340,5 +357,6 @@ fun CreatePromoCard(
 
         }
     }
+
 }
 

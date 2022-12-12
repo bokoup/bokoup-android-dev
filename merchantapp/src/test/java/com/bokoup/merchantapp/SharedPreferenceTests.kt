@@ -9,4 +9,5 @@ class SharedPreferenceTests {
     fun shared_preference_labels_work() {
         assert(SharedPrefKeys.GroupSeed.key == "groupSeed")
     }
+
 }

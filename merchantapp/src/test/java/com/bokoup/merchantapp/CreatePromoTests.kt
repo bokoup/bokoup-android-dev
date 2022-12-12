@@ -1,11 +1,8 @@
 package com.bokoup.merchantapp
-
 import android.util.Log
 import com.bokoup.merchantapp.model.PromoType
 import com.bokoup.merchantapp.model.asJson
-import com.bokoup.merchantapp.util.PromoTypeSerializer
 import com.bokoup.merchantapp.util.addAttribute
-import com.google.gson.GsonBuilder
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
@@ -25,18 +22,16 @@ class CreatePromoTests {
             collectionFamily = "collectionFamily",
             maxMint = 10,
             maxBurn = 5,
-
             buyXCurrency = 100,
             getYPercent = 10
         )
 
-        val gson = GsonBuilder().apply {
+      /*  val gson = GsonBuilder().apply {
             registerTypeAdapter(PromoType::class.java, PromoTypeSerializer())
-        }.create()
+        }.create()*/
 
         val metadataJson = promo.asJson
         Log.d("CreatePromoTests", metadataJson)
-
         val metadata = JsonParser().parse(metadataJson).asJsonObject
 
         listOf("name", "symbol", "description").forEach {
@@ -49,13 +44,10 @@ class CreatePromoTests {
         attributes.addAttribute("getYPercent", promo.getYPercent)
         attributes.addAttribute("maxMint", promo.maxMint!!)
         attributes.addAttribute("maxBurn", promo.maxBurn!!)
-
         assert(attributes == metadata["attributes"].asJsonArray) { "attributes arrays not equal" }
-
         val collectionObject = JsonObject()
         collectionObject.addProperty("name", promo.collectionName)
         collectionObject.addProperty("family", promo.collectionFamily)
-
         assert(collectionObject == metadata["collection"].asJsonObject) { "collection objects are not equal" }
 
     }
@@ -75,10 +67,10 @@ class CreatePromoTests {
             getYProduct = 1
         )
 
-        val gson = GsonBuilder().apply {
+       /* val gson = GsonBuilder().apply {
             registerTypeAdapter(PromoType::class.java, PromoTypeSerializer())
         }.create()
-
+*/
         val metadataJson = promo.asJson
 
         val metadata = JsonParser().parse(metadataJson).asJsonObject

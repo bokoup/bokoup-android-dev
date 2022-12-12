@@ -15,7 +15,10 @@ class TransactionService {
         level = HttpLoggingInterceptor.Level.HEADERS
     }
 
-    private val retrofit: Retrofit = Retrofit.Builder().baseUrl("http://99.91.8.130:8080")
+    /**
+     * trasaction api---http://99.91.8.130:8080
+     */
+    private val retrofit: Retrofit = Retrofit.Builder().baseUrl("https://tx.api.bokoup.dev/")
         .client(OkHttpClient.Builder().apply {addInterceptor(interceptor = interceptor)}.build())
         .addConverterFactory(GsonConverterFactory.create())
         .build()
@@ -24,8 +27,7 @@ class TransactionService {
 
 public interface PromoService {
     @GET("promo/create")
-    suspend fun getAppId(
-    ): AppId
+    suspend fun getAppId(): AppId
 
     @Multipart
     @Streaming

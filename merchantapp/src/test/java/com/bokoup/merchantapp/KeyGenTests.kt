@@ -13,7 +13,6 @@ class KeyGenTests {
             it.toInt().toUByte()
         }
         val bytesStringOut = bytesList.joinToString(",") { it.toInt().toString() }
-
         assert(bytesStringIn == bytesStringOut)
     }
 

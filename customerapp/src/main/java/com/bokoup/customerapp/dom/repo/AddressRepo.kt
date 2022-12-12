@@ -11,6 +11,5 @@ interface AddressRepo {
     fun getAddresses(): Flow<Resource<List<Address>>>
     fun getAddress(id: String): Flow<Resource<Address>>
     fun getActiveAddress(): Flow<Resource<Address>>
-
     fun updateActive(id: String)
 }
