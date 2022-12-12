@@ -93,8 +93,10 @@ fun PromoContent(
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
                         it.map { promo ->
+                            //val link = "https://explorer.solana.com/address/" + promo.mintObject?.id + "?cluster=custom&customUrl=http%3A%2F%2F99.91.8.130%3A8899"
+
                             val link =
-                                "https://explorer.solana.com/address/" + promo.mintObject?.id + "?cluster=custom&customUrl=http%3A%2F%2F99.91.8.130%3A8899"
+                                "https://explorer.solana.com/address/" + promo.mintObject?.id + "?cluster=custom&customUrl=https://api.devnet.solana.com"
                             val attributes =
                                 JsonParser().parse(Gson().toJson(promo.metadataObject?.attributes)).asJsonArray.filter {
                                     !listOf<String>(
@@ -139,11 +141,18 @@ fun PromoContent(
                                             Text(text = promo.mintObject?.id?.slice(0..8) ?: "")
                                         }
                                     }
+                                    /**
+                                     * user :- seema
+                                     * date:-25/11/2022
+                                     * description:-set  image height
+                                     */
                                     AsyncImage(
                                         model = promo.metadataObject?.image,
                                         modifier = Modifier
                                             .padding(6.dp)
-                                            .width(324.dp),
+                                            .width(324.dp)
+                                            .height(300.dp)
+                                        ,
                                         contentDescription = null
                                     )
                                     Row(

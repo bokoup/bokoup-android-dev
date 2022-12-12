@@ -71,8 +71,7 @@ fun TenderContent(
                             Checkbox(
                                 checked = tender.enabled, onCheckedChange = {
                                     viewModel.setTenderEnabled(
-                                        tender.tenderId, !tender.enabled
-                                    )
+                                        tender.tenderId, !tender.enabled)
                                 }, enabled = enabled
                             )
                         }

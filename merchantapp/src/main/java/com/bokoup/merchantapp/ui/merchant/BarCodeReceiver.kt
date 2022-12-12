@@ -1,5 +1,6 @@
 package com.bokoup.merchantapp.ui.merchant
 
+import android.annotation.SuppressLint
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -23,6 +24,7 @@ class BarCodeReceiver(private val context: Context) {
         }
     }
 
+    @SuppressLint("WrongConstant")
     fun register() {
         Log.d("jingus", "receiver registered")
         val filter = IntentFilter(BarcodeResult.INTENT_ACTION)

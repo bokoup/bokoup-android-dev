@@ -15,7 +15,6 @@ android {
         targetSdk 33
         versionCode 1
         versionName "1.0"
-
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary true
@@ -51,6 +50,7 @@ android {
 }
 
 dependencies {
+    implementation 'androidx.test.ext:junit-ktx:1.1.4'
     androidTestImplementation libs.bundles.test
     debugImplementation libs.bundles.debug
     implementation libs.accompanist.placeholder
@@ -76,6 +76,8 @@ dependencies {
     implementation projects.lib
     kapt libs.bundles.kapt
     testImplementation libs.android.junit
+    testImplementation libs.roboelectric
+    testImplementation libs.mockit
 }
 apollo {
     packageName.set("com.bokoup.customerapp")

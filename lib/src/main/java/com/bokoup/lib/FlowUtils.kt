@@ -1,5 +1,6 @@
 package com.bokoup.lib
 
+import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlin.coroutines.CoroutineContext
@@ -23,7 +24,18 @@ fun <T> resourceFlowOf(
         runCatching {
             action.invoke()
         }.onSuccess {
-            emit(Resource.Success(it))
+            /**
+             * user:--seema
+             * date:--25/11/2022
+             * description:--add null pointer exception
+             */
+
+            if (it!=null)
+            {
+                emit(Resource.Success(it))
+            }
+            //
+            Log.d("tag",""+Resource.Success(it))
         }.onFailure {
             emit(Resource.Error(it))
         }

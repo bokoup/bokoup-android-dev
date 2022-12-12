@@ -45,7 +45,8 @@ class CustomerViewModel @Inject constructor(
 
         qrCodeConsumer.collectFlow(resourceFlowOf {
             val url = URL(
-                "http://99.91.8.130:8080/promo/delegate/$mintString/$delegateString/${
+                //http://99.91.8.130:8080
+                "https://api.devnet.solana.com/promo/delegate/$mintString/$delegateString/${
                     withContext(Dispatchers.IO) {
                         URLEncoder.encode(
                             message, "utf-8"
