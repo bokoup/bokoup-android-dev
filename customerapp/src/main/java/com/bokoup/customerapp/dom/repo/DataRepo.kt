@@ -7,6 +7,4 @@ import kotlinx.coroutines.flow.Flow
 
 interface DataRepo {
     val tokenAccountSubscriptionFlow: Flow<ApolloResponse<TokenAccountListSubscription.Data>>
-
-    fun getActiveAddress(): Flow<Resource<String>>
 }

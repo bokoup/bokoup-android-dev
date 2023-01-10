@@ -45,11 +45,7 @@ class AppModule() {
     @Provides
     fun dataRepo(
         dataService: DataService,
-        addressDao: AddressDao
-    ): DataRepo = DataRepoImpl(
-        dataService,
-        addressDao
-    )
+    ): DataRepo = DataRepoImpl(dataService)
 
     @Provides
     fun chainDb(
