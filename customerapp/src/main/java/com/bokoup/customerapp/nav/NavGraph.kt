@@ -42,7 +42,7 @@ fun NavGraph(navController: NavHostController, openDrawer: () -> Unit) {
     }
 
     NavHost(
-        navController = navController, startDestination = Screen.Share.name
+        navController = navController, startDestination = Screen.Scan.name
     ) {
         composable(
             route = Screen.Tokens.name
@@ -62,13 +62,12 @@ fun NavGraph(navController: NavHostController, openDrawer: () -> Unit) {
             ShareScreen(
                 openDrawer = openDrawer,
                 snackbarHostState = snackbarHostState,
-                navigateToScan = { navController.navigate(Screen.Scan.name) })
+            )
         }
         composable(
             route = Screen.Scan.name
         ) {
-            val route =
-                ScanScreen(openDrawer = openDrawer,
+            ScanScreen(openDrawer = openDrawer,
                     snackbarHostState = snackbarHostState,
                     navigateToApprove = { url ->
                         navController.navigate(
