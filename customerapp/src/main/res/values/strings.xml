@@ -6,4 +6,6 @@
     <string name="share">Share</string>
     <string name="scan">Scan</string>
     <string name="approve">Approve</string>
+    <string name="grant_permission">Grant Permission</string>
+    <string name="grant_permission_camera_instructions">We need permission to access your camera to scan for QR codes</string>
 </resources>

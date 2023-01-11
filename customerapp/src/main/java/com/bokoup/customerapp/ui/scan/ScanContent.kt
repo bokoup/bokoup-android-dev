@@ -25,10 +25,13 @@ import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.Fill
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.bokoup.customerapp.R
 import com.bokoup.customerapp.dom.model.ScanResult
 
 
@@ -73,12 +76,6 @@ fun ScanContent(
 
     val scanResult: ScanResult? by viewModel.scanResult.collectAsState()
 
-    LaunchedEffect(hasPermissions) {
-        if (hasPermissions[Manifest.permission.CAMERA] != true) {
-            launcher.launch(permissions.toTypedArray())
-        }
-    }
-
     LaunchedEffect(scanResult) {
         if (scanResult != null) {
             if (scanResult is ScanResult.BokoupUrl) {
@@ -88,7 +85,26 @@ fun ScanContent(
         }
 
     }
-    if (hasPermissions[Manifest.permission.CAMERA] == true) {
+
+    if (hasPermissions[Manifest.permission.CAMERA] != true) {
+        Column(
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(padding),
+        ) {
+            Text(
+                text = stringResource(R.string.grant_permission_camera_instructions),
+                textAlign = TextAlign.Center,
+                modifier = Modifier.padding(horizontal = 16.dp)
+            )
+            Spacer(modifier = Modifier.padding(16.dp))
+            Button(onClick = { launcher.launch(permissions.toTypedArray()) }) {
+                Text(text = stringResource(R.string.grant_permission))
+            }
+        }
+    } else {
         Box(
             modifier = Modifier
                 .fillMaxSize()
