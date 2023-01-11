@@ -73,8 +73,10 @@ fun ScanContent(
 
     val scanResult: ScanResult? by viewModel.scanResult.collectAsState()
 
-    LaunchedEffect(key1 = true) {
-        launcher.launch(permissions.toTypedArray())
+    LaunchedEffect(hasPermissions) {
+        if (hasPermissions[Manifest.permission.CAMERA] != true) {
+            launcher.launch(permissions.toTypedArray())
+        }
     }
 
     LaunchedEffect(scanResult) {
@@ -86,7 +88,7 @@ fun ScanContent(
         }
 
     }
-    if (hasPermissions[Manifest.permission.CAMERA]!!) {
+    if (hasPermissions[Manifest.permission.CAMERA] == true) {
         Box(
             modifier = Modifier
                 .fillMaxSize()
