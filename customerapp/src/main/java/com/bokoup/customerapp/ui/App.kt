@@ -47,12 +47,10 @@ fun App(
             // Only enable opening the drawer via gestures if the screen is not expanded
             // gesturesEnabled = !isExpandedScreen
         ) {
-            Row {
-                NavGraph(
-                    navController = navController,
-                    openDrawer = { coroutineScope.launch { sizeAwareDrawerState.open() } }
-                )
-            }
+            NavGraph(
+                navController = navController,
+                openDrawer = { coroutineScope.launch { sizeAwareDrawerState.open() } }
+            )
         }
     }
 }
