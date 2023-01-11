@@ -6,9 +6,13 @@
     <string name="share">Share</string>
     <string name="scan">Scan</string>
     <string name="approve">Approve</string>
+    <string name="next">Next</string>
     <string name="grant_permission">Grant Permission</string>
     <string name="grant_permission_camera_instructions">We need permission to access your camera to scan for QR codes</string>
 
     <string name="onboarding_welcome_get_started_button">Get Started</string>
     <string name="onboarding_welcome_message">Digital collectibles wherever you shop</string>
+    <string name="onboarding_enter_pin_title">Create a pin</string>
+    <string name="onboarding_enter_pin_message">Enter a pin code to help protect your data. You will need to enter this pin each time you redeem.</string>
+    <string name="onboarding_enter_pin_hint">Eg \"1234\"</string>
 </resources>
