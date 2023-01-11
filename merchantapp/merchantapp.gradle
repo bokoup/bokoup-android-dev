@@ -21,23 +21,23 @@ android {
         vectorDrawables {
             useSupportLibrary true
         }
-        signingConfigs {
-            create("release") {
-                storeFile = file("C:\\Users\\jr\\.ssh\\clover_test_app.jks")
-                storePassword = "nunyab"
-                keyAlias = "clover_test_app"
-                keyPassword = "nunyab"
-                v1SigningEnabled true
-                v2SigningEnabled false
-            }
-        }
+//        signingConfigs {
+//            create("release") {
+//                storeFile = file("C:\\Users\\jr\\.ssh\\clover_test_app.jks")
+//                storePassword = "nunyab"
+//                keyAlias = "clover_test_app"
+//                keyPassword = "nunyab"
+//                v1SigningEnabled true
+//                v2SigningEnabled false
+//            }
+//        }
     }
 
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            signingConfig = signingConfigs.getByName("release")
+//            signingConfig = signingConfigs.getByName("release")
         }
     }
     compileOptions {

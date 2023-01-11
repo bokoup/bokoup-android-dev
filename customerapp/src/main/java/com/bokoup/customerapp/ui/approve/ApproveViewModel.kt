@@ -4,18 +4,18 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bokoup.customerapp.data.net.TokenApiId
 import com.bokoup.customerapp.data.net.TokenApiResponse
-import com.bokoup.customerapp.dom.model.toKeyPair
+import com.bokoup.customerapp.dom.model.Address
 import com.bokoup.customerapp.dom.repo.AddressRepo
 import com.bokoup.customerapp.dom.repo.SolanaRepo
 import com.bokoup.customerapp.dom.repo.TokenRepo
 import com.bokoup.lib.ResourceFlowConsumer
-import com.bokoup.lib.mapData
 import com.dgsd.ksol.core.model.KeyPair
 import com.dgsd.ksol.core.model.TransactionSignature
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -26,27 +26,25 @@ class ApproveViewModel @Inject constructor(
     private val addressRepo: AddressRepo,
     private val solanaRepo: SolanaRepo,
 ) : ViewModel() {
-    val keyPairConsumer = ResourceFlowConsumer<KeyPair>(viewModelScope)
+    private val addressConsumer = ResourceFlowConsumer<Address?>(viewModelScope)
     val appIdConsumer = ResourceFlowConsumer<TokenApiId>(viewModelScope)
     val transactionConsumer = ResourceFlowConsumer<TokenApiResponse>(viewModelScope)
     val signatureConsumer = ResourceFlowConsumer<TransactionSignature>(viewModelScope)
     val errorConsumer = merge(
         appIdConsumer.error,
-        keyPairConsumer.error,
+        addressConsumer.error,
         transactionConsumer.error,
         signatureConsumer.error
     )
+
+    val activeWalletAddress = addressConsumer.data.mapNotNull { it?.id }
 
     private val _swipeComplete = MutableStateFlow(false)
     val swipeComplete =_swipeComplete.asStateFlow()
 
     fun getKeyPair() {
         viewModelScope.launch(Dispatchers.IO) {
-            keyPairConsumer.collectFlow(
-                addressRepo.getActiveAddress().mapData { address ->
-                    checkNotNull(address).toKeyPair()
-                }
-            )
+            addressConsumer.collectFlow(addressRepo.getActiveAddress())
         }
     }
 

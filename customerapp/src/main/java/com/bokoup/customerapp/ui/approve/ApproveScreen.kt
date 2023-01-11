@@ -31,12 +31,12 @@ fun ApproveScreen(
     navigateToTokens: () -> Unit
 ) {
 
-    val keyPair: KeyPair? by viewModel.keyPairConsumer.data.collectAsState()
     val appId: TokenApiId? by viewModel.appIdConsumer.data.collectAsState()
     val transaction: TokenApiResponse? by viewModel.transactionConsumer.data.collectAsState()
     val signature: TransactionSignature? by viewModel.signatureConsumer.data.collectAsState()
     val error: Throwable? by viewModel.errorConsumer.collectAsState(null)
     val swipeComplete: Boolean by viewModel.swipeComplete.collectAsState()
+    val activeWalletAddress by viewModel.activeWalletAddress.collectAsState(initial = null)
 
     LaunchedEffect(error) {
         if (error != null) {
@@ -44,13 +44,12 @@ fun ApproveScreen(
         }
     }
 
-    LaunchedEffect(key1 = keyPair) {
-        if (keyPair != null && url != null) {
+    LaunchedEffect(key1 = activeWalletAddress) {
+        val walletAddress = activeWalletAddress
+        if (walletAddress != null && url != null) {
             Log.d("url", url)
             viewModel.getAppId(url)
-            viewModel.getTokenTransaction(url,
-                keyPair!!.publicKey.toString()
-            )
+            viewModel.getTokenTransaction(url, walletAddress)
         }
     }
 
@@ -66,12 +65,14 @@ fun ApproveScreen(
         openDrawer = openDrawer,
         screen = Screen.Approve,
         content = {
-            if (transaction != null && keyPair != null) {
+            if (transaction != null) {
                 ApproveContent(
                     padding = it,
                     appId = appId,
                     message = transaction!!.message,
-                    onSwipe = { viewModel.signAndSend(transaction!!.transaction, keyPair!!) },
+                    onSwipe = {
+                        // Coming soon: Show biometric prompt, sign and send
+                    },
                     swipeComplete = swipeComplete,
                     setSwipeComplete = { value -> viewModel.setSwipeComplete(value) },
                     isComplete = signature != null || error != null,

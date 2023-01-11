@@ -35,6 +35,7 @@ import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import javax.inject.Named
+import javax.inject.Provider
 import javax.inject.Singleton
 
 private const val SHARED_PREF_NAME_SETTINGS = "settings"
@@ -135,11 +136,13 @@ class AppModule {
     fun addressRepo(
         addressDao: AddressDao,
         solanaRepo: SolanaRepo,
-        keyFactory: KeyFactory
+        keyFactory: KeyFactory,
+        @Named(SHARED_PREF_APP_SECRETS) secretsSharedPreferencesProvider: Provider<SharedPreferences>,
     ): AddressRepo = AddressRepoImpl(
         addressDao = addressDao,
         solanaRepo = solanaRepo,
-        keyFactory = keyFactory
+        keyFactory = keyFactory,
+        secretsSharedPreferencesProvider = secretsSharedPreferencesProvider,
     )
 
     @Singleton
