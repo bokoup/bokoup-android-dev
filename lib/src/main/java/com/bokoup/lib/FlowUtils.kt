@@ -48,7 +48,13 @@ fun <T, R> Flow<Resource<T>>.mapData(
         when (resource) {
             is Resource.Error -> Resource.Error(resource.error, newData)
             is Resource.Loading -> Resource.Loading(newData)
-            is Resource.Success -> Resource.Success(checkNotNull(newData))
+            is Resource.Success -> {
+                if (newData == null) {
+                    Resource.Error(IllegalStateException("Required data was missing"))
+                } else {
+                    Resource.Success(newData)
+                }
+            }
         }
     }
 }
