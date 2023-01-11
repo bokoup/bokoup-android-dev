@@ -18,4 +18,7 @@
     <string name="onboarding_confirm_pin_title">Confirm pin</string>
     <string name="onboarding_confirm_pin_message">Enter the same pin again</string>
     <string name="onboarding_confirm_pin_error_does_not_match">Pin does not match</string>
+
+    <string name="biometric_prompt_title">Verify that it\'s you</string>
+    <string name="biometric_prompt_message">We\'ll securely store your data so only you have access</string>
 </resources>

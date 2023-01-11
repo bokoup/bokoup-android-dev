@@ -9,15 +9,22 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.bokoup.customerapp.R
+import com.bokoup.customerapp.biometrics.showBiometricPrompt
+import com.bokoup.customerapp.util.findActivity
 import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
 import dagger.hilt.android.EntryPointAccessors
 import dagger.hilt.android.components.ActivityComponent
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @EntryPoint
 @InstallIn(ActivityComponent::class)
@@ -45,6 +52,20 @@ fun OnboardingConfirmPinContent(
     val textInput by viewModel.textInput.collectAsState()
     val isNextButtonEnabled by viewModel.isNextButtonEnabled.collectAsState(false)
     val shouldShowErrorState by viewModel.isError.collectAsState()
+
+    val lifecycle = LocalLifecycleOwner.current.lifecycle
+    val activity = LocalContext.current.findActivity()
+
+    LaunchedEffect(Unit) {
+        lifecycle.repeatOnLifecycle(state = Lifecycle.State.STARTED) {
+            launch {
+                viewModel.showBiometricPrompt.collectLatest {
+                    val result = activity.showBiometricPrompt(it)
+                    viewModel.onBiometricPromptResult(result)
+                }
+            }
+        }
+    }
 
     Column(
         modifier = Modifier.fillMaxSize(),

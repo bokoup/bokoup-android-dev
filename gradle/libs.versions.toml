@@ -77,6 +77,8 @@ retrofit-converter = { module = "com.squareup.retrofit2:converter-gson", version
 shimmer-android = "com.facebook.shimmer:shimmer:0.5.0"
 zxing = "com.google.zxing:core:3.5.0"
 roboelectric = "org.robolectric:robolectric:4.8"
+androidx-biometrics = "androidx.biometric:biometric:1.2.0-alpha04"
+androidx-security = "androidx.security:security-crypto:1.0.0"
 
 #lottie = "com.airbnb.android:lottie:5.2.0"
 #http://airbnb.io/lottie/#/android-compose

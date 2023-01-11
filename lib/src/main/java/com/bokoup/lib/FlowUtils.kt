@@ -30,6 +30,12 @@ fun <T> resourceFlowOf(
     }.flowOn(context)
 }
 
+fun <T> Flow<T>.asResourceFlow(): Flow<Resource<T>> {
+    return this.map { Resource.Success(it) as Resource<T> }
+        .onStart { emit(Resource.Loading<T>(null)) }
+        .catch { Resource.Error<T>(it) }
+}
+
 fun <T> Flow<Resource<T>>.onEachSuccess(
     action: suspend (T) -> Unit
 ): Flow<Resource<T>> {

@@ -41,7 +41,7 @@ fun OnboardingNavGraph(
             OnboardingConfirmPinContent(
                 pinToConfirm = checkNotNull(it.arguments?.getString("pinToConfirm")),
                 onNavigateBack = { navController.navigateUp() },
-                onCreatePinConfirmed = {}
+                onCreatePinConfirmed = {},
             )
         }
     }
