@@ -1,15 +1,12 @@
 package com.bokoup.customerapp.ui.onboarding
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 
 @ExperimentalMaterial3Api
 @Composable
@@ -30,18 +27,22 @@ fun OnboardingNavGraph(
             OnboardingEnterPinContent(
                 onNavigateBack = { navController.navigateUp() },
                 onConfirmPinClicked = { pinToConfirm ->
-                    navController.navigate(OnboardingScreen.ConfirmPin.name)
+                    navController.navigate("${OnboardingScreen.ConfirmPin.name}?pinToConfirm=$pinToConfirm")
                 }
             )
         }
 
-        composable(OnboardingScreen.ConfirmPin.name) {
-            Box(
-                contentAlignment = Alignment.Center,
-                modifier = Modifier.fillMaxSize()
-            ) {
-                Text("Coming soon: Confirm Pin!")
-            }
+        composable(
+            route = "${OnboardingScreen.ConfirmPin.name}?pinToConfirm={pinToConfirm}",
+            arguments = listOf(
+                navArgument("pinToConfirm") { type = NavType.StringType; nullable = false }
+            )
+        ) {
+            OnboardingConfirmPinContent(
+                pinToConfirm = checkNotNull(it.arguments?.getString("pinToConfirm")),
+                onNavigateBack = { navController.navigateUp() },
+                onCreatePinConfirmed = {}
+            )
         }
     }
 }

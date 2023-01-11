@@ -15,4 +15,7 @@
     <string name="onboarding_enter_pin_title">Create a pin</string>
     <string name="onboarding_enter_pin_message">Enter a pin code to help protect your data. You will need to enter this pin each time you redeem.</string>
     <string name="onboarding_enter_pin_hint">Eg \"1234\"</string>
+    <string name="onboarding_confirm_pin_title">Confirm pin</string>
+    <string name="onboarding_confirm_pin_message">Enter the same pin again</string>
+    <string name="onboarding_confirm_pin_error_does_not_match">Pin does not match</string>
 </resources>
