@@ -29,10 +29,8 @@ class AddressRepoImpl(
         addresses
     }
 
-    override fun getActiveAddress(): Flow<Resource<Address>> {
-      return resourceFlowOf {
-          checkNotNull(addressDao.getActiveAddress())
-      }
+    override fun getActiveAddress(): Flow<Resource<Address?>> {
+      return resourceFlowOf { addressDao.getActiveAddress() }
     }
 
     override fun updateActive(id: String) {

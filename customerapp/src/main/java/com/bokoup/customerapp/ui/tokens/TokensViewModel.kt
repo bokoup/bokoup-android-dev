@@ -23,7 +23,7 @@ class TokensViewModel @Inject constructor(
     val tokenAccountSubscription = dataRepo.tokenAccountSubscriptionFlow
     fun getActiveAdress() = viewModelScope.launch(dispatcher) {
         addressConsumer.collectFlow(
-            addressRepo.getActiveAddress().mapData { it.id }
+            addressRepo.getActiveAddress().mapData { it?.id }
         )
     }
 

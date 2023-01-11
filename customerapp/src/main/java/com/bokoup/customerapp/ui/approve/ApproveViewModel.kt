@@ -37,13 +37,16 @@ class ApproveViewModel @Inject constructor(
         signatureConsumer.error
     )
 
-    private val _swipeComplete = MutableStateFlow<Boolean>(false)
+    private val _swipeComplete = MutableStateFlow(false)
     val swipeComplete =_swipeComplete.asStateFlow()
 
     fun getKeyPair() {
         viewModelScope.launch(Dispatchers.IO) {
             keyPairConsumer.collectFlow(
-                addressRepo.getActiveAddress().mapData { address -> address.toKeyPair() })
+                addressRepo.getActiveAddress().mapData { address ->
+                    checkNotNull(address).toKeyPair()
+                }
+            )
         }
     }
 

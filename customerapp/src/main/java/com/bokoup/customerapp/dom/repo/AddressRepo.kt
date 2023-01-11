@@ -8,6 +8,6 @@ import kotlinx.coroutines.flow.Flow
 interface AddressRepo {
     fun insertAddress(active: Boolean? = null): Flow<Resource<Unit>>
     fun getAddresses(): Flow<Resource<List<Address>>>
-    fun getActiveAddress(): Flow<Resource<Address>>
+    fun getActiveAddress(): Flow<Resource<Address?>>
     fun updateActive(id: String)
 }

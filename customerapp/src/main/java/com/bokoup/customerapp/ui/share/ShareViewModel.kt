@@ -23,7 +23,9 @@ class ShareViewModel @Inject constructor(
 
     fun getQrCode() = viewModelScope.launch(Dispatchers.IO) {
         qrCodeConsumer.collectFlow(
-            addressRepo.getActiveAddress().mapData { Pair(it.id, qrCodeGenerator.generateQR(it.id)) }
+            addressRepo.getActiveAddress().mapData { address ->
+                checkNotNull(address).id to qrCodeGenerator.generateQR(address.id)
+            }
         )
 
     }
