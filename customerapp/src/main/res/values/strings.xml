@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">bokoup</string>
+    <string name="app_name">Bokoup</string>
     <string name="tokens">Tokens</string>
     <string name="token_detail">Token Details</string>
     <string name="wallet">Wallet</string>
@@ -8,4 +8,7 @@
     <string name="approve">Approve</string>
     <string name="grant_permission">Grant Permission</string>
     <string name="grant_permission_camera_instructions">We need permission to access your camera to scan for QR codes</string>
+
+    <string name="onboarding_welcome_get_started_button">Get Started</string>
+    <string name="onboarding_welcome_message">Digital collectibles wherever you shop</string>
 </resources>

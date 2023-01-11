@@ -15,7 +15,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.bokoup.customerapp.nav.NavGraph
 import com.bokoup.customerapp.nav.Screen
-import com.bokoup.customerapp.ui.onboarding.OnboardingScreen
+import com.bokoup.customerapp.ui.onboarding.OnboardingNavGraph
 import com.bokoup.customerapp.ui.theme.AppTheme
 import com.bokoup.lib.Loading
 import kotlinx.coroutines.launch
@@ -49,7 +49,7 @@ fun App(
             }
 
             false -> {
-                OnboardingScreen()
+                OnboardingNavGraph(navController)
             }
 
             true -> {
