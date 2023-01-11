@@ -25,7 +25,9 @@ class MainActivity : ComponentActivity() {
         WindowCompat.setDecorFitsSystemWindows(window, true)
 
         setContent {
-            App(calculateWindowSizeClass(this).widthSizeClass)
+            App(
+                calculateWindowSizeClass(this).widthSizeClass
+            )
         }
     }
 }

@@ -5,15 +5,19 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material3.*
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.bokoup.customerapp.nav.NavGraph
 import com.bokoup.customerapp.nav.Screen
+import com.bokoup.customerapp.ui.onboarding.OnboardingScreen
 import com.bokoup.customerapp.ui.theme.AppTheme
+import com.bokoup.lib.Loading
 import kotlinx.coroutines.launch
 
 
@@ -21,7 +25,8 @@ import kotlinx.coroutines.launch
 @ExperimentalMaterialApi
 @ExperimentalMaterial3Api
 fun App(
-    widthSizeClass: WindowWidthSizeClass
+    widthSizeClass: WindowWidthSizeClass,
+    viewModel: AppViewModel = hiltViewModel(),
 ) {
     AppTheme {
         val navController = rememberNavController()
@@ -35,22 +40,38 @@ fun App(
         val isExpandedScreen = widthSizeClass == WindowWidthSizeClass.Expanded
         val sizeAwareDrawerState = rememberSizeAwareDrawerState(isExpandedScreen)
 
-        ModalNavigationDrawer(
-            drawerContent = {
-                AppDrawer(
-                    currentRoute = currentRoute,
-                    navController = navController,
-                    closeDrawer = { coroutineScope.launch { sizeAwareDrawerState.close() } }
-                )
-            },
-            drawerState = sizeAwareDrawerState,
-            // Only enable opening the drawer via gestures if the screen is not expanded
-            // gesturesEnabled = !isExpandedScreen
-        ) {
-            NavGraph(
-                navController = navController,
-                openDrawer = { coroutineScope.launch { sizeAwareDrawerState.open() } }
-            )
+        val hasActiveAddress by viewModel.hasActiveWalletAddress.collectAsState(null)
+
+        when (hasActiveAddress) {
+            null -> {
+                // We're waiting for our initial state
+                Loading(isLoading = true)
+            }
+
+            false -> {
+                OnboardingScreen()
+            }
+
+            true -> {
+                // Navigate into the app proper
+                ModalNavigationDrawer(
+                    drawerContent = {
+                        AppDrawer(
+                            currentRoute = currentRoute,
+                            navController = navController,
+                            closeDrawer = { coroutineScope.launch { sizeAwareDrawerState.close() } }
+                        )
+                    },
+                    drawerState = sizeAwareDrawerState,
+                    // Only enable opening the drawer via gestures if the screen is not expanded
+                    // gesturesEnabled = !isExpandedScreen
+                ) {
+                    NavGraph(
+                        navController = navController,
+                        openDrawer = { coroutineScope.launch { sizeAwareDrawerState.open() } }
+                    )
+                }
+            }
         }
     }
 }
