@@ -78,14 +78,14 @@ fun NavGraph(navController: NavHostController, openDrawer: () -> Unit) {
         composable(
             route = "${Screen.Approve.name}?url={url}",
             arguments = listOf(
-                navArgument("url") { type = NavType.StringType; nullable = true },
+                navArgument("url") { type = NavType.StringType; nullable = false },
             ),
         ) {
             ApproveScreen(
                 openDrawer = openDrawer,
                 snackbarHostState = snackbarHostState,
                 channel = channel,
-                url = it.arguments?.getString("url"),
+                url = checkNotNull(it.arguments?.getString("url")),
                 navigateToTokens = { navController.navigate(Screen.Tokens.name) }
             )
         }

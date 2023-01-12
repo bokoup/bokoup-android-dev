@@ -27,7 +27,7 @@ fun ApproveScreen(
     snackbarHostState: SnackbarHostState,
     openDrawer: () -> Unit,
     channel: Channel<String>,
-    url: String?,
+    url: String,
     navigateToTokens: () -> Unit
 ) {
 
@@ -46,7 +46,7 @@ fun ApproveScreen(
 
     LaunchedEffect(key1 = activeWalletAddress) {
         val walletAddress = activeWalletAddress
-        if (walletAddress != null && url != null) {
+        if (walletAddress != null) {
             Log.d("url", url)
             viewModel.getAppId(url)
             viewModel.getTokenTransaction(url, walletAddress)

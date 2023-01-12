@@ -61,13 +61,6 @@ fun AppDrawer(
             onClick = { navController.navigate(Screen.Scan.name); closeDrawer() },
             modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
         )
-        NavigationDrawerItem(
-            label = { Text(stringResource(id = Screen.Approve.title)) },
-            icon = { Icon(Icons.Filled.Approval, null) },
-            selected = currentRoute == Screen.Approve.name,
-            onClick = { navController.navigate(Screen.Approve.name); closeDrawer() },
-            modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
-        )
     }
 }
 
