@@ -1,17 +1,15 @@
 package com.bokoup.customerapp.ui.wallet
 
-
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.Icon
-import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.bokoup.customerapp.R
 import com.bokoup.customerapp.dom.model.Address
 import com.bokoup.customerapp.nav.Screen
 import com.bokoup.customerapp.ui.common.AppScreen
@@ -53,9 +51,20 @@ fun WalletScreen(
             )
         },
         floatingActionButton = {
-            FloatingActionButton(onClick = { viewModel.insertAddress() }) {
-                Icon(Icons.Filled.Add, contentDescription = "Add Address")
-            }
+            ExtendedFloatingActionButton(
+                text = { Text(
+                    stringResource(R.string.create_wallet),
+                    color = MaterialTheme.colorScheme.onPrimaryContainer
+                ) },
+                icon = {
+                    Icon(
+                        Icons.Filled.Add,
+                        tint = MaterialTheme.colorScheme.onPrimaryContainer,
+                        contentDescription = stringResource(R.string.create_wallet)
+                    )
+                },
+                onClick = { viewModel.insertAddress() }
+            )
         },
     )
 }
