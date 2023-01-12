@@ -11,9 +11,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.bokoup.customerapp.R
-import com.bokoup.customerapp.data.net.TokenApiId
 import com.bokoup.customerapp.ui.common.SwipeButton
 import com.dgsd.ksol.core.model.TransactionSignature
+import com.dgsd.ksol.solpay.model.SolPayTransactionRequestDetails
 import java.net.URLDecoder
 
 
@@ -22,7 +22,7 @@ import java.net.URLDecoder
 @ExperimentalMaterial3Api
 fun ApproveContent(
     padding: PaddingValues,
-    appId: TokenApiId?,
+    appId: SolPayTransactionRequestDetails?,
     message: String?,
     isComplete: Boolean,
     signature: TransactionSignature?,
@@ -36,10 +36,10 @@ fun ApproveContent(
             .padding(padding),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        if (appId != null) {
-            Text(text = appId.label, modifier = Modifier.padding(vertical = 16.dp))
+        if (appId?.label != null && appId.iconUrl != null) {
+            Text(text = appId.label.orEmpty(), modifier = Modifier.padding(vertical = 16.dp))
             AsyncImage(
-                model = appId.icon,
+                model = appId.iconUrl,
                 placeholder = painterResource(id = R.drawable.ic_bokoup_logo),
                 contentDescription = null,
             )

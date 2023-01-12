@@ -2,8 +2,6 @@ package com.bokoup.customerapp.ui.approve
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.bokoup.customerapp.data.net.TokenApiId
-import com.bokoup.customerapp.data.net.TokenApiResponse
 import com.bokoup.customerapp.dom.model.Address
 import com.bokoup.customerapp.dom.repo.AddressRepo
 import com.bokoup.customerapp.dom.repo.SolanaRepo
@@ -11,6 +9,8 @@ import com.bokoup.customerapp.dom.repo.TokenRepo
 import com.bokoup.lib.ResourceFlowConsumer
 import com.dgsd.ksol.core.model.KeyPair
 import com.dgsd.ksol.core.model.TransactionSignature
+import com.dgsd.ksol.solpay.model.SolPayTransactionInfo
+import com.dgsd.ksol.solpay.model.SolPayTransactionRequestDetails
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -27,8 +27,8 @@ class ApproveViewModel @Inject constructor(
     private val solanaRepo: SolanaRepo,
 ) : ViewModel() {
     private val addressConsumer = ResourceFlowConsumer<Address?>(viewModelScope)
-    val appIdConsumer = ResourceFlowConsumer<TokenApiId>(viewModelScope)
-    val transactionConsumer = ResourceFlowConsumer<TokenApiResponse>(viewModelScope)
+    val appIdConsumer = ResourceFlowConsumer<SolPayTransactionRequestDetails>(viewModelScope)
+    val transactionConsumer = ResourceFlowConsumer<SolPayTransactionInfo>(viewModelScope)
     val signatureConsumer = ResourceFlowConsumer<TransactionSignature>(viewModelScope)
     val errorConsumer = merge(
         appIdConsumer.error,

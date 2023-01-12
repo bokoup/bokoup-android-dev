@@ -10,7 +10,7 @@ gradle = '7.5.1'
 hilt-dagger = "2.44"
 hilt_navigation_compose = "1.0.0"
 kotlin = "1.7.10"
-ksol = "1.0.0"
+ksol = "1.1.1"
 navigation = "2.5.2"
 retrofit = "2.9.0"
 room = "2.4.3"
@@ -68,6 +68,7 @@ kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref =
 ksol-core = { module = "io.github.dlgrech:ksol-core", version.ref = "ksol" }
 ksol-keygen = { module = "io.github.dlgrech:ksol-keygen", version.ref = "ksol" }
 ksol-rpc = { module = "io.github.dlgrech:ksol-rpc", version.ref = "ksol" }
+ksol-solpay = { module = "io.github.dlgrech:ksol-solpay", version.ref = "ksol" }
 material-icons-extended = { module = "androidx.compose.material:material-icons-extended", version.ref = "compose" }
 mlkit = "com.google.mlkit:barcode-scanning:17.0.2"
 okhttp = "com.squareup.okhttp3:okhttp:4.10.0"
@@ -93,4 +94,4 @@ kapt = ["androidx-room-compiler", "dagger-hilt-android-compiler"]
 hilt = ["dagger-hilt-android", "hilt-navigation-compose"]
 camerax = ["camera-core", "camera-camera2", "camera-lifecycle", "camera-video", "camera-view", "camera-extensions", "camera-mlkit"]
 retrofit = ["retrofit", "retrofit-converter"]
-ksol = ["ksol-core", "ksol-rpc", "ksol-keygen"]
+ksol = ["ksol-core", "ksol-rpc", "ksol-keygen", "ksol-solpay"]

@@ -27,6 +27,7 @@ import com.dgsd.ksol.SolanaApi
 import com.dgsd.ksol.core.LocalTransactions
 import com.dgsd.ksol.core.model.Cluster
 import com.dgsd.ksol.keygen.KeyFactory
+import com.dgsd.ksol.solpay.SolPay
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -85,19 +86,30 @@ class AppModule {
 
     @Singleton
     @Provides
-    fun tokenApi(
-    ) = TransactionService()
+    fun okHttp(
+    ) = OkHttpClient.Builder().apply {
+        addInterceptor(interceptor = HttpLoggingInterceptor().apply {
+            level = HttpLoggingInterceptor.Level.BODY
+        })
+    }.build()
 
     @Singleton
     @Provides
     fun solanaApi(
+        okHttpClient: OkHttpClient,
     ) = SolanaApi(
         Cluster.Custom("https://api.devnet.solana.com/", "wss://api.devnet.solana.com/"),
-        OkHttpClient.Builder().apply {
-            addInterceptor(interceptor = HttpLoggingInterceptor().apply {
-                level = HttpLoggingInterceptor.Level.BODY
-            })
-        }.build()
+        okHttpClient
+    )
+
+    @Singleton
+    @Provides
+    fun solPay(
+        okHttpClient: OkHttpClient,
+        solanaApi: SolanaApi,
+    ) = SolPay(
+        okHttpClient,
+        solanaApi
     )
 
     @Singleton
@@ -109,10 +121,10 @@ class AppModule {
     @Provides
     fun tokenRepo(
         tokenDao: TokenDao,
-        transactionService: TransactionService,
+        solPay: SolPay,
     ): TokenRepo = TokenRepoImpl(
         tokenDao = tokenDao,
-        transactionService = transactionService,
+        solPay = solPay,
     )
 
     @Singleton

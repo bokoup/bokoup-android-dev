@@ -10,12 +10,11 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.bokoup.customerapp.data.net.TokenApiId
-import com.bokoup.customerapp.data.net.TokenApiResponse
 import com.bokoup.customerapp.nav.Screen
 import com.bokoup.customerapp.ui.common.AppScreen
-import com.dgsd.ksol.core.model.KeyPair
 import com.dgsd.ksol.core.model.TransactionSignature
+import com.dgsd.ksol.solpay.model.SolPayTransactionInfo
+import com.dgsd.ksol.solpay.model.SolPayTransactionRequestDetails
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
 
@@ -31,8 +30,8 @@ fun ApproveScreen(
     navigateToTokens: () -> Unit
 ) {
 
-    val appId: TokenApiId? by viewModel.appIdConsumer.data.collectAsState()
-    val transaction: TokenApiResponse? by viewModel.transactionConsumer.data.collectAsState()
+    val appId: SolPayTransactionRequestDetails? by viewModel.appIdConsumer.data.collectAsState()
+    val transaction: SolPayTransactionInfo? by viewModel.transactionConsumer.data.collectAsState()
     val signature: TransactionSignature? by viewModel.signatureConsumer.data.collectAsState()
     val error: Throwable? by viewModel.errorConsumer.collectAsState(null)
     val swipeComplete: Boolean by viewModel.swipeComplete.collectAsState()
@@ -47,7 +46,6 @@ fun ApproveScreen(
     LaunchedEffect(key1 = activeWalletAddress) {
         val walletAddress = activeWalletAddress
         if (walletAddress != null) {
-            Log.d("url", url)
             viewModel.getAppId(url)
             viewModel.getTokenTransaction(url, walletAddress)
         }
