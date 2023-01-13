@@ -1,5 +1,8 @@
-subscription TokenAccountListSubscription {
-  tokenAccount(orderBy: {mintObject: {promoObject: {metadataObject: {name: ASC}}}}) {
+subscription TokenAccountListSubscription($ownedBy: String!) {
+  tokenAccount(
+    where: {owner: {_eq: $ownedBy}}
+    orderBy: {mintObject: {promoObject: {metadataObject: {name: ASC}}}}
+  ) {
     id
     owner
     amount
