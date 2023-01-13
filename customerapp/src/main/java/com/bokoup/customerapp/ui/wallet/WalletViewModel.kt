@@ -10,7 +10,6 @@ import com.bokoup.customerapp.dom.model.Address
 import com.bokoup.customerapp.dom.repo.AddressRepo
 import com.bokoup.customerapp.flow.MutableEventFlow
 import com.bokoup.customerapp.flow.asEventFlow
-import com.bokoup.customerapp.flow.call
 import com.bokoup.lib.ResourceFlowConsumer
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher

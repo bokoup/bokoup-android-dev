@@ -29,7 +29,7 @@ import kotlinx.coroutines.launch
 @EntryPoint
 @InstallIn(ActivityComponent::class)
 interface ViewModelFactoryProvider {
-    fun noteDetailViewModelFactory(): OnboardingConfirmPinViewModel.Factory
+    fun onboardingConfirmPinViewModelFactory(): OnboardingConfirmPinViewModel.Factory
 }
 
 @ExperimentalMaterial3Api
@@ -43,7 +43,7 @@ fun OnboardingConfirmPinContent(
     val factory = EntryPointAccessors.fromActivity(
         LocalContext.current as Activity,
         ViewModelFactoryProvider::class.java
-    ).noteDetailViewModelFactory()
+    ).onboardingConfirmPinViewModelFactory()
 
     val viewModel = viewModel(
         factory = OnboardingConfirmPinViewModel.provideFactory(factory, pinToConfirm)
