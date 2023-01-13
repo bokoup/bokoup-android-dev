@@ -7,13 +7,22 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.repeatOnLifecycle
 import com.bokoup.customerapp.R
+import com.bokoup.customerapp.biometrics.BiometricPromptResult
+import com.bokoup.customerapp.biometrics.showBiometricPrompt
 import com.bokoup.customerapp.dom.model.Address
 import com.bokoup.customerapp.nav.Screen
 import com.bokoup.customerapp.ui.common.AppScreen
+import com.bokoup.customerapp.util.findActivity
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @Composable
 @ExperimentalMaterial3Api
@@ -23,6 +32,9 @@ fun WalletScreen(
     openDrawer: () -> Unit,
     channel: Channel<String>
 ) {
+    val lifecycle = LocalLifecycleOwner.current.lifecycle
+    val activity = LocalContext.current.findActivity()
+
     val addresses: List<Address>? by viewModel.addressesConsumer.data.collectAsState()
     val isLoadingAddreses: Boolean by viewModel.addressesConsumer.isLoading.collectAsState()
     val isLoadingInsert: Boolean by viewModel.insertAddressConsumer.isLoading.collectAsState()
@@ -36,6 +48,19 @@ fun WalletScreen(
 
     LaunchedEffect(isLoadingInsert) {
         viewModel.getAddresses()
+    }
+
+    LaunchedEffect(Unit) {
+        lifecycle.repeatOnLifecycle(state = Lifecycle.State.STARTED) {
+            launch {
+                viewModel.showBiometricPrompt.collectLatest {
+                    val result = activity.showBiometricPrompt(it)
+                    if (result == BiometricPromptResult.SUCCESS) {
+                        viewModel.onUserAuthenticationConfirmed()
+                    }
+                }
+            }
+        }
     }
 
     AppScreen(
@@ -63,7 +88,7 @@ fun WalletScreen(
                         contentDescription = stringResource(R.string.create_wallet)
                     )
                 },
-                onClick = { viewModel.insertAddress() }
+                onClick = { viewModel.onCreateNewWalletClicked() }
             )
         },
     )
