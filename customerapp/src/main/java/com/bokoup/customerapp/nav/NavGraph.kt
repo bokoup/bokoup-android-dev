@@ -57,6 +57,10 @@ fun NavGraph(navController: NavHostController, openDrawer: () -> Unit) {
             )
         }
         composable(
+            route = Screen.Transactions.name
+        ) {
+        }
+        composable(
             route = Screen.Share.name
         ) {
             ShareScreen(

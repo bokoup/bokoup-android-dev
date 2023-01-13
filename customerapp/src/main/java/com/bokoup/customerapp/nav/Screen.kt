@@ -8,6 +8,7 @@ enum class Screen(@StringRes val title: Int) {
     Tokens(title = R.string.tokens),
     TokenDetail(title = R.string.token_detail),
     Wallet(title = R.string.wallet),
+    Transactions(title = R.string.transactions),
     Share(title = R.string.share),
     Scan(title = R.string.scan),
     Approve(title = R.string.approve)
