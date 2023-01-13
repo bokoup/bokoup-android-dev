@@ -15,6 +15,7 @@ import com.bokoup.customerapp.ui.approve.ApproveScreen
 import com.bokoup.customerapp.ui.scan.ScanScreen
 import com.bokoup.customerapp.ui.share.ShareScreen
 import com.bokoup.customerapp.ui.tokens.TokensScreen
+import com.bokoup.customerapp.ui.transactions.TransactionsScreen
 import com.bokoup.customerapp.ui.wallet.WalletScreen
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.consumeAsFlow
@@ -59,6 +60,7 @@ fun NavGraph(navController: NavHostController, openDrawer: () -> Unit) {
         composable(
             route = Screen.Transactions.name
         ) {
+            TransactionsScreen(openDrawer = openDrawer, snackbarHostState = snackbarHostState)
         }
         composable(
             route = Screen.Share.name
