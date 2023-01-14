@@ -42,6 +42,156 @@ input BooleanComparisonExp {
   _nin: [Boolean!]
 }
 
+"""
+columns and relationships of "burn_delegated_promo_token"
+"""
+type BurnDelegatedPromoToken {
+  adminSettings: String!
+  authority: String!
+  createdAt: timestamptz!
+  memo(
+    """JSON select path"""
+    path: String
+  ): jsonb
+  mint: String!
+
+  """An object relationship"""
+  mintObject: Mint
+  modifiedAt: timestamptz!
+  payer: String!
+  platform: String!
+  promo: String!
+  promoGroup: String!
+
+  """An object relationship"""
+  promoObject: Promo
+  signature: String!
+  slot: bigint!
+  tokenAccount: String!
+
+  """An object relationship"""
+  tokenAccountObject: TokenAccount
+}
+
+"""
+Boolean expression to filter rows from the table "burn_delegated_promo_token". All fields are combined with a logical 'AND'.
+"""
+input BurnDelegatedPromoTokenBoolExp {
+  _and: [BurnDelegatedPromoTokenBoolExp!]
+  _not: BurnDelegatedPromoTokenBoolExp
+  _or: [BurnDelegatedPromoTokenBoolExp!]
+  adminSettings: StringComparisonExp
+  authority: StringComparisonExp
+  createdAt: TimestamptzComparisonExp
+  memo: JsonbComparisonExp
+  mint: StringComparisonExp
+  mintObject: MintBoolExp
+  modifiedAt: TimestamptzComparisonExp
+  payer: StringComparisonExp
+  platform: StringComparisonExp
+  promo: StringComparisonExp
+  promoGroup: StringComparisonExp
+  promoObject: PromoBoolExp
+  signature: StringComparisonExp
+  slot: BigintComparisonExp
+  tokenAccount: StringComparisonExp
+  tokenAccountObject: TokenAccountBoolExp
+}
+
+"""
+Ordering options when selecting data from "burn_delegated_promo_token".
+"""
+input BurnDelegatedPromoTokenOrderBy {
+  adminSettings: OrderBy
+  authority: OrderBy
+  createdAt: OrderBy
+  memo: OrderBy
+  mint: OrderBy
+  mintObject: MintOrderBy
+  modifiedAt: OrderBy
+  payer: OrderBy
+  platform: OrderBy
+  promo: OrderBy
+  promoGroup: OrderBy
+  promoObject: PromoOrderBy
+  signature: OrderBy
+  slot: OrderBy
+  tokenAccount: OrderBy
+  tokenAccountObject: TokenAccountOrderBy
+}
+
+"""
+select columns of table "burn_delegated_promo_token"
+"""
+enum BurnDelegatedPromoTokenSelectColumn {
+  """column name"""
+  adminSettings
+
+  """column name"""
+  authority
+
+  """column name"""
+  createdAt
+
+  """column name"""
+  memo
+
+  """column name"""
+  mint
+
+  """column name"""
+  modifiedAt
+
+  """column name"""
+  payer
+
+  """column name"""
+  platform
+
+  """column name"""
+  promo
+
+  """column name"""
+  promoGroup
+
+  """column name"""
+  signature
+
+  """column name"""
+  slot
+
+  """column name"""
+  tokenAccount
+}
+
+"""
+Streaming cursor of the table "burn_delegated_promo_token"
+"""
+input BurnDelegatedPromoTokenStreamCursorInput {
+  """Stream column input with initial value"""
+  initialValue: BurnDelegatedPromoTokenStreamCursorValueInput!
+
+  """cursor ordering"""
+  ordering: CursorOrdering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input BurnDelegatedPromoTokenStreamCursorValueInput {
+  adminSettings: String
+  authority: String
+  createdAt: timestamptz
+  memo: jsonb
+  mint: String
+  modifiedAt: timestamptz
+  payer: String
+  platform: String
+  promo: String
+  promoGroup: String
+  signature: String
+  slot: bigint
+  tokenAccount: String
+}
+
 """ordering argument of a cursor"""
 enum CursorOrdering {
   """ascending ordering of the cursor"""
@@ -55,7 +205,6 @@ enum CursorOrdering {
 columns and relationships of "delegate_promo_token"
 """
 type DelegatePromoToken {
-  authority: String!
   createdAt: timestamptz!
   delegate: String!
   memo(
@@ -85,7 +234,6 @@ input DelegatePromoTokenBoolExp {
   _and: [DelegatePromoTokenBoolExp!]
   _not: DelegatePromoTokenBoolExp
   _or: [DelegatePromoTokenBoolExp!]
-  authority: StringComparisonExp
   createdAt: TimestamptzComparisonExp
   delegate: StringComparisonExp
   memo: JsonbComparisonExp
@@ -103,7 +251,6 @@ input DelegatePromoTokenBoolExp {
 
 """Ordering options when selecting data from "delegate_promo_token"."""
 input DelegatePromoTokenOrderBy {
-  authority: OrderBy
   createdAt: OrderBy
   delegate: OrderBy
   memo: OrderBy
@@ -123,9 +270,6 @@ input DelegatePromoTokenOrderBy {
 select columns of table "delegate_promo_token"
 """
 enum DelegatePromoTokenSelectColumn {
-  """column name"""
-  authority
-
   """column name"""
   createdAt
 
@@ -158,6 +302,32 @@ enum DelegatePromoTokenSelectColumn {
 
   """column name"""
   tokenOwner
+}
+
+"""
+Streaming cursor of the table "delegate_promo_token"
+"""
+input DelegatePromoTokenStreamCursorInput {
+  """Stream column input with initial value"""
+  initialValue: DelegatePromoTokenStreamCursorValueInput!
+
+  """cursor ordering"""
+  ordering: CursorOrdering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input DelegatePromoTokenStreamCursorValueInput {
+  createdAt: timestamptz
+  delegate: String
+  memo: jsonb
+  modifiedAt: timestamptz
+  payer: String
+  promo: String
+  promoGroup: String
+  signature: String
+  slot: bigint
+  tokenAccount: String
+  tokenOwner: String
 }
 
 """
@@ -370,6 +540,43 @@ enum MetadataSelectColumn {
 }
 
 """
+Streaming cursor of the table "metadata"
+"""
+input MetadataStreamCursorInput {
+  """Stream column input with initial value"""
+  initialValue: MetadataStreamCursorValueInput!
+
+  """cursor ordering"""
+  ordering: CursorOrdering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input MetadataStreamCursorValueInput {
+  collectionKey: String
+  collectionVerified: Boolean
+  createdAt: timestamptz
+  editionNonce: Int
+  id: String
+  isMutable: Boolean
+  key: String
+  metadataJson: jsonb
+  mint: String
+  modifiedAt: timestamptz
+  name: String
+  primarySaleHappened: Boolean
+  sellerFeeBasisPoints: Int
+  slot: bigint
+  symbol: String
+  tokenStandard: String
+  updateAuthority: String
+  uri: String
+  usesRemaining: bigint
+  usesTotal: bigint
+  usesUseMethod: String
+  writeVersion: bigint
+}
+
+"""
 columns and relationships of "mint"
 """
 type Mint {
@@ -444,6 +651,142 @@ input MintOrderBy {
 }
 
 """
+columns and relationships of "mint_promo_token"
+"""
+type MintPromoToken {
+  authority: String!
+  createdAt: timestamptz!
+  memo(
+    """JSON select path"""
+    path: String
+  ): jsonb
+  mint: String!
+
+  """An object relationship"""
+  mintObject: Mint
+  modifiedAt: timestamptz!
+  payer: String!
+  promo: String!
+  promoGroup: String!
+
+  """An object relationship"""
+  promoObject: Promo
+  signature: String!
+  slot: bigint!
+  tokenAccount: String!
+  tokenOwner: String!
+}
+
+"""
+Boolean expression to filter rows from the table "mint_promo_token". All fields are combined with a logical 'AND'.
+"""
+input MintPromoTokenBoolExp {
+  _and: [MintPromoTokenBoolExp!]
+  _not: MintPromoTokenBoolExp
+  _or: [MintPromoTokenBoolExp!]
+  authority: StringComparisonExp
+  createdAt: TimestamptzComparisonExp
+  memo: JsonbComparisonExp
+  mint: StringComparisonExp
+  mintObject: MintBoolExp
+  modifiedAt: TimestamptzComparisonExp
+  payer: StringComparisonExp
+  promo: StringComparisonExp
+  promoGroup: StringComparisonExp
+  promoObject: PromoBoolExp
+  signature: StringComparisonExp
+  slot: BigintComparisonExp
+  tokenAccount: StringComparisonExp
+  tokenOwner: StringComparisonExp
+}
+
+"""Ordering options when selecting data from "mint_promo_token"."""
+input MintPromoTokenOrderBy {
+  authority: OrderBy
+  createdAt: OrderBy
+  memo: OrderBy
+  mint: OrderBy
+  mintObject: MintOrderBy
+  modifiedAt: OrderBy
+  payer: OrderBy
+  promo: OrderBy
+  promoGroup: OrderBy
+  promoObject: PromoOrderBy
+  signature: OrderBy
+  slot: OrderBy
+  tokenAccount: OrderBy
+  tokenOwner: OrderBy
+}
+
+"""
+select columns of table "mint_promo_token"
+"""
+enum MintPromoTokenSelectColumn {
+  """column name"""
+  authority
+
+  """column name"""
+  createdAt
+
+  """column name"""
+  memo
+
+  """column name"""
+  mint
+
+  """column name"""
+  modifiedAt
+
+  """column name"""
+  payer
+
+  """column name"""
+  promo
+
+  """column name"""
+  promoGroup
+
+  """column name"""
+  signature
+
+  """column name"""
+  slot
+
+  """column name"""
+  tokenAccount
+
+  """column name"""
+  tokenOwner
+}
+
+"""
+Streaming cursor of the table "mint_promo_token"
+"""
+input MintPromoTokenStreamCursorInput {
+  """Stream column input with initial value"""
+  initialValue: MintPromoTokenStreamCursorValueInput!
+
+  """cursor ordering"""
+  ordering: CursorOrdering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input MintPromoTokenStreamCursorValueInput {
+  authority: String
+  createdAt: timestamptz
+  memo: jsonb
+  mint: String
+  modifiedAt: timestamptz
+  payer: String
+  promo: String
+  promoGroup: String
+  signature: String
+  slot: bigint
+  tokenAccount: String
+  tokenOwner: String
+}
+
+"""
 select columns of table "mint"
 """
 enum MintSelectColumn {
@@ -476,6 +819,31 @@ enum MintSelectColumn {
 
   """column name"""
   writeVersion
+}
+
+"""
+Streaming cursor of the table "mint"
+"""
+input MintStreamCursorInput {
+  """Stream column input with initial value"""
+  initialValue: MintStreamCursorValueInput!
+
+  """cursor ordering"""
+  ordering: CursorOrdering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input MintStreamCursorValueInput {
+  createdAt: timestamptz
+  decimals: Int
+  freezeAuthority: String
+  id: String
+  isInitialized: Boolean
+  mintAuthority: String
+  modifiedAt: timestamptz
+  slot: bigint
+  supply: bigint
+  writeVersion: bigint
 }
 
 """column ordering options"""
@@ -668,6 +1036,30 @@ enum PromoGroupSelectColumn {
   writeVersion
 }
 
+"""
+Streaming cursor of the table "promo_group"
+"""
+input PromoGroupStreamCursorInput {
+  """Stream column input with initial value"""
+  initialValue: PromoGroupStreamCursorValueInput!
+
+  """cursor ordering"""
+  ordering: CursorOrdering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input PromoGroupStreamCursorValueInput {
+  createdAt: timestamptz
+  id: String
+  members: jsonb
+  modifiedAt: timestamptz
+  nonce: Int
+  owner: String
+  seed: String
+  slot: bigint
+  writeVersion: bigint
+}
+
 """Ordering options when selecting data from "promo"."""
 input PromoOrderBy {
   burnCount: OrderBy
@@ -726,6 +1118,33 @@ enum PromoSelectColumn {
 
   """column name"""
   writeVersion
+}
+
+"""
+Streaming cursor of the table "promo"
+"""
+input PromoStreamCursorInput {
+  """Stream column input with initial value"""
+  initialValue: PromoStreamCursorValueInput!
+
+  """cursor ordering"""
+  ordering: CursorOrdering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input PromoStreamCursorValueInput {
+  burnCount: Int
+  createdAt: timestamptz
+  id: String
+  maxBurn: Int
+  maxMint: Int
+  metadata: String
+  mint: String
+  mintCount: Int
+  modifiedAt: timestamptz
+  owner: String
+  slot: bigint
+  writeVersion: bigint
 }
 
 """
@@ -920,98 +1339,37 @@ enum TokenAccountSelectColumn {
   writeVersion
 }
 
-scalar bigint
-
 """
-Streaming cursor of the table "delegate_promo_token"
+Streaming cursor of the table "token_account"
 """
-input delegate_promo_token_streamCursorInput {
+input TokenAccountStreamCursorInput {
   """Stream column input with initial value"""
-  initialValue: delegate_promo_token_streamCursorValueInput!
+  initialValue: TokenAccountStreamCursorValueInput!
 
   """cursor ordering"""
   ordering: CursorOrdering
 }
 
 """Initial value of the column from where the streaming should start"""
-input delegate_promo_token_streamCursorValueInput {
-  authority: String
+input TokenAccountStreamCursorValueInput {
+  amount: bigint
+  closeAuthority: String
   createdAt: timestamptz
   delegate: String
-  memo: jsonb
-  modifiedAt: timestamptz
-  payer: String
-  promo: String
-  promoGroup: String
-  signature: String
-  slot: bigint
-  tokenAccount: String
-  tokenOwner: String
-}
-
-scalar jsonb
-
-"""
-Streaming cursor of the table "metadata"
-"""
-input metadata_streamCursorInput {
-  """Stream column input with initial value"""
-  initialValue: metadata_streamCursorValueInput!
-
-  """cursor ordering"""
-  ordering: CursorOrdering
-}
-
-"""Initial value of the column from where the streaming should start"""
-input metadata_streamCursorValueInput {
-  collectionKey: String
-  collectionVerified: Boolean
-  createdAt: timestamptz
-  editionNonce: Int
+  delegatedAmount: bigint
   id: String
-  isMutable: Boolean
-  key: String
-  metadataJson: jsonb
+  isNative: bigint
   mint: String
   modifiedAt: timestamptz
-  name: String
-  primarySaleHappened: Boolean
-  sellerFeeBasisPoints: Int
+  owner: String
   slot: bigint
-  symbol: String
-  tokenStandard: String
-  updateAuthority: String
-  uri: String
-  usesRemaining: bigint
-  usesTotal: bigint
-  usesUseMethod: String
+  state: String
   writeVersion: bigint
 }
 
-"""
-Streaming cursor of the table "mint"
-"""
-input mint_streamCursorInput {
-  """Stream column input with initial value"""
-  initialValue: mint_streamCursorValueInput!
+scalar bigint
 
-  """cursor ordering"""
-  ordering: CursorOrdering
-}
-
-"""Initial value of the column from where the streaming should start"""
-input mint_streamCursorValueInput {
-  createdAt: timestamptz
-  decimals: Int
-  freezeAuthority: String
-  id: String
-  isInitialized: Boolean
-  mintAuthority: String
-  modifiedAt: timestamptz
-  slot: bigint
-  supply: bigint
-  writeVersion: bigint
-}
+scalar jsonb
 
 """
 order by avg() on columns of table "promo"
@@ -1023,30 +1381,6 @@ input promo_avg_order_by {
   mintCount: OrderBy
   slot: OrderBy
   writeVersion: OrderBy
-}
-
-"""
-Streaming cursor of the table "promo_group"
-"""
-input promo_group_streamCursorInput {
-  """Stream column input with initial value"""
-  initialValue: promo_group_streamCursorValueInput!
-
-  """cursor ordering"""
-  ordering: CursorOrdering
-}
-
-"""Initial value of the column from where the streaming should start"""
-input promo_group_streamCursorValueInput {
-  createdAt: timestamptz
-  id: String
-  members: jsonb
-  modifiedAt: timestamptz
-  nonce: Int
-  owner: String
-  seed: String
-  slot: bigint
-  writeVersion: bigint
 }
 
 """
@@ -1122,33 +1456,6 @@ input promo_stddev_samp_order_by {
 }
 
 """
-Streaming cursor of the table "promo"
-"""
-input promo_streamCursorInput {
-  """Stream column input with initial value"""
-  initialValue: promo_streamCursorValueInput!
-
-  """cursor ordering"""
-  ordering: CursorOrdering
-}
-
-"""Initial value of the column from where the streaming should start"""
-input promo_streamCursorValueInput {
-  burnCount: Int
-  createdAt: timestamptz
-  id: String
-  maxBurn: Int
-  maxMint: Int
-  metadata: String
-  mint: String
-  mintCount: Int
-  modifiedAt: timestamptz
-  owner: String
-  slot: bigint
-  writeVersion: bigint
-}
-
-"""
 order by sum() on columns of table "promo"
 """
 input promo_sum_order_by {
@@ -1197,6 +1504,31 @@ input promo_variance_order_by {
 }
 
 type query_root {
+  """
+  fetch data from the table: "burn_delegated_promo_token"
+  """
+  burnDelegatedPromoToken(
+    """distinct select on columns"""
+    distinctOn: [BurnDelegatedPromoTokenSelectColumn!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    orderBy: [BurnDelegatedPromoTokenOrderBy!]
+
+    """filter the rows returned"""
+    where: BurnDelegatedPromoTokenBoolExp
+  ): [BurnDelegatedPromoToken!]!
+
+  """
+  fetch data from the table: "burn_delegated_promo_token" using primary key columns
+  """
+  burnDelegatedPromoTokenByPk(signature: String!): BurnDelegatedPromoToken
+
   """
   fetch data from the table: "delegate_promo_token"
   """
@@ -1267,6 +1599,31 @@ type query_root {
 
   """fetch data from the table: "mint" using primary key columns"""
   mintByPk(id: String!): Mint
+
+  """
+  fetch data from the table: "mint_promo_token"
+  """
+  mintPromoToken(
+    """distinct select on columns"""
+    distinctOn: [MintPromoTokenSelectColumn!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    orderBy: [MintPromoTokenOrderBy!]
+
+    """filter the rows returned"""
+    where: MintPromoTokenBoolExp
+  ): [MintPromoToken!]!
+
+  """
+  fetch data from the table: "mint_promo_token" using primary key columns
+  """
+  mintPromoTokenByPk(signature: String!): MintPromoToken
 
   """
   fetch data from the table: "promo"
@@ -1340,6 +1697,45 @@ type query_root {
 
 type subscription_root {
   """
+  fetch data from the table: "burn_delegated_promo_token"
+  """
+  burnDelegatedPromoToken(
+    """distinct select on columns"""
+    distinctOn: [BurnDelegatedPromoTokenSelectColumn!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    orderBy: [BurnDelegatedPromoTokenOrderBy!]
+
+    """filter the rows returned"""
+    where: BurnDelegatedPromoTokenBoolExp
+  ): [BurnDelegatedPromoToken!]!
+
+  """
+  fetch data from the table: "burn_delegated_promo_token" using primary key columns
+  """
+  burnDelegatedPromoTokenByPk(signature: String!): BurnDelegatedPromoToken
+
+  """
+  fetch data from the table in a streaming manner: "burn_delegated_promo_token"
+  """
+  burnDelegatedPromoTokenStream(
+    """maximum number of rows returned in a single batch"""
+    batchSize: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [BurnDelegatedPromoTokenStreamCursorInput]!
+
+    """filter the rows returned"""
+    where: BurnDelegatedPromoTokenBoolExp
+  ): [BurnDelegatedPromoToken!]!
+
+  """
   fetch data from the table: "delegate_promo_token"
   """
   delegatePromoToken(
@@ -1372,7 +1768,7 @@ type subscription_root {
     batchSize: Int!
 
     """cursor to stream the results returned by the query"""
-    cursor: [delegate_promo_token_streamCursorInput]!
+    cursor: [DelegatePromoTokenStreamCursorInput]!
 
     """filter the rows returned"""
     where: DelegatePromoTokenBoolExp
@@ -1409,7 +1805,7 @@ type subscription_root {
     batchSize: Int!
 
     """cursor to stream the results returned by the query"""
-    cursor: [metadata_streamCursorInput]!
+    cursor: [MetadataStreamCursorInput]!
 
     """filter the rows returned"""
     where: MetadataBoolExp
@@ -1439,6 +1835,45 @@ type subscription_root {
   mintByPk(id: String!): Mint
 
   """
+  fetch data from the table: "mint_promo_token"
+  """
+  mintPromoToken(
+    """distinct select on columns"""
+    distinctOn: [MintPromoTokenSelectColumn!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    orderBy: [MintPromoTokenOrderBy!]
+
+    """filter the rows returned"""
+    where: MintPromoTokenBoolExp
+  ): [MintPromoToken!]!
+
+  """
+  fetch data from the table: "mint_promo_token" using primary key columns
+  """
+  mintPromoTokenByPk(signature: String!): MintPromoToken
+
+  """
+  fetch data from the table in a streaming manner: "mint_promo_token"
+  """
+  mintPromoTokenStream(
+    """maximum number of rows returned in a single batch"""
+    batchSize: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [MintPromoTokenStreamCursorInput]!
+
+    """filter the rows returned"""
+    where: MintPromoTokenBoolExp
+  ): [MintPromoToken!]!
+
+  """
   fetch data from the table in a streaming manner: "mint"
   """
   mintStream(
@@ -1446,7 +1881,7 @@ type subscription_root {
     batchSize: Int!
 
     """cursor to stream the results returned by the query"""
-    cursor: [mint_streamCursorInput]!
+    cursor: [MintStreamCursorInput]!
 
     """filter the rows returned"""
     where: MintBoolExp
@@ -1506,7 +1941,7 @@ type subscription_root {
     batchSize: Int!
 
     """cursor to stream the results returned by the query"""
-    cursor: [promo_group_streamCursorInput]!
+    cursor: [PromoGroupStreamCursorInput]!
 
     """filter the rows returned"""
     where: PromoGroupBoolExp
@@ -1520,7 +1955,7 @@ type subscription_root {
     batchSize: Int!
 
     """cursor to stream the results returned by the query"""
-    cursor: [promo_streamCursorInput]!
+    cursor: [PromoStreamCursorInput]!
 
     """filter the rows returned"""
     where: PromoBoolExp
@@ -1557,7 +1992,7 @@ type subscription_root {
     batchSize: Int!
 
     """cursor to stream the results returned by the query"""
-    cursor: [token_account_streamCursorInput]!
+    cursor: [TokenAccountStreamCursorInput]!
 
     """filter the rows returned"""
     where: TokenAccountBoolExp
@@ -1649,34 +2084,6 @@ input token_account_stddev_samp_order_by {
 }
 
 """
-Streaming cursor of the table "token_account"
-"""
-input token_account_streamCursorInput {
-  """Stream column input with initial value"""
-  initialValue: token_account_streamCursorValueInput!
-
-  """cursor ordering"""
-  ordering: CursorOrdering
-}
-
-"""Initial value of the column from where the streaming should start"""
-input token_account_streamCursorValueInput {
-  amount: bigint
-  closeAuthority: String
-  createdAt: timestamptz
-  delegate: String
-  delegatedAmount: bigint
-  id: String
-  isNative: bigint
-  mint: String
-  modifiedAt: timestamptz
-  owner: String
-  slot: bigint
-  state: String
-  writeVersion: bigint
-}
-
-"""
 order by sum() on columns of table "token_account"
 """
 input token_account_sum_order_by {
@@ -1719,4 +2126,3 @@ input token_account_variance_order_by {
   slot: OrderBy
   writeVersion: OrderBy
 }
-

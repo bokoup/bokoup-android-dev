@@ -13,6 +13,7 @@ import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
+import com.bokoup.lib.Loading
 
 @Composable
 @ExperimentalMaterial3Api
@@ -24,104 +25,116 @@ fun TokensContent(
 
     val tokenAccounts by viewModel.tokenAccounts.collectAsState(emptyList())
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(padding)
-            .verticalScroll(rememberScrollState()),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        for (tokenAccount in tokenAccounts) {
-            val link =
-                "https://explorer.solana.com/address/" + tokenAccount.mintObject?.id + "?cluster=devnet"
-            ElevatedCard(
-                modifier = Modifier
-                    .width(284.dp)
-                    .padding(8.dp)
-            ) {
-                Column(
-                    modifier = Modifier.fillMaxWidth(),
+    val isLoading by viewModel.isLoading.collectAsState(false)
+
+    if (isLoading) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(padding)
+        ) {
+            Loading(isLoading = true)
+        }
+    } else {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(padding)
+                .verticalScroll(rememberScrollState()),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            for (tokenAccount in tokenAccounts) {
+                val link =
+                    "https://explorer.solana.com/address/" + tokenAccount.mintObject?.id + "?cluster=devnet"
+                ElevatedCard(
+                    modifier = Modifier
+                        .width(284.dp)
+                        .padding(8.dp)
                 ) {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(
-                                PaddingValues(
-                                    start = 16.dp,
-                                    end = 16.dp,
-                                    top = 8.dp
-                                )
-                            ),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
+                    Column(
+                        modifier = Modifier.fillMaxWidth(),
                     ) {
-                        Text(
-                            text = tokenAccount.mintObject?.promoObject?.metadataObject!!.name,
-                            style = MaterialTheme.typography.titleMedium
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(
+                                    PaddingValues(
+                                        start = 16.dp,
+                                        end = 16.dp,
+                                        top = 8.dp
+                                    )
+                                ),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                text = tokenAccount.mintObject?.promoObject?.metadataObject!!.name,
+                                style = MaterialTheme.typography.titleMedium
+                            )
+                            TextButton(onClick = { uriHandler.openUri(link) }) {
+                                Text(text = tokenAccount.mintObject.id.slice(0..8) ?: "")
+                            }
+                        }
+                        AsyncImage(
+                            model = tokenAccount.mintObject?.promoObject?.metadataObject?.image,
+                            modifier = Modifier
+                                .padding(6.dp)
+                                .width(324.dp),
+                            contentDescription = null
                         )
-                        TextButton(onClick = { uriHandler.openUri(link) }) {
-                            Text(text = tokenAccount.mintObject?.id?.slice(0..8) ?: "")
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 16.dp, vertical = 6.dp),
+                            horizontalArrangement = Arrangement.Start
+                        ) {
+                            Text(
+                                text = tokenAccount.mintObject?.promoObject?.metadataObject?.description.toString(),
+                                style = MaterialTheme.typography.bodySmall
+                            )
+                        }
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 16.dp, vertical = 4.dp),
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            Divider(thickness = 1.dp)
+                        }
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 16.dp, vertical = 2.dp),
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            Text(
+                                text = "amount:",
+                                style = MaterialTheme.typography.labelMedium
+                            )
+                            Text(
+                                text = tokenAccount.amount.toString(),
+                                style = MaterialTheme.typography.bodyMedium
+                            )
+                        }
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 16.dp, vertical = 2.dp),
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            Text(
+                                text = "delegated amount:",
+                                style = MaterialTheme.typography.labelMedium
+                            )
+                            Text(
+                                text = tokenAccount.delegatedAmount.toString(),
+                                style = MaterialTheme.typography.bodyMedium
+                            )
                         }
                     }
-                    AsyncImage(
-                        model = tokenAccount.mintObject?.promoObject?.metadataObject?.image,
-                        modifier = Modifier
-                            .padding(6.dp)
-                            .width(324.dp),
-                        contentDescription = null
-                    )
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 16.dp, vertical = 6.dp),
-                        horizontalArrangement = Arrangement.Start
-                    ) {
-                        Text(
-                            text = tokenAccount.mintObject?.promoObject?.metadataObject?.description.toString(),
-                            style = MaterialTheme.typography.bodySmall
-                        )
-                    }
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 16.dp, vertical = 4.dp),
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
-                        Divider(thickness = 1.dp)
-                    }
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 16.dp, vertical = 2.dp),
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
-                        Text(
-                            text = "amount:",
-                            style = MaterialTheme.typography.labelMedium
-                        )
-                        Text(
-                            text = tokenAccount.amount.toString(),
-                            style = MaterialTheme.typography.bodyMedium
-                        )
-                    }
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 16.dp, vertical = 2.dp),
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
-                        Text(
-                            text = "delegated amount:",
-                            style = MaterialTheme.typography.labelMedium
-                        )
-                        Text(
-                            text = tokenAccount.delegatedAmount.toString(),
-                            style = MaterialTheme.typography.bodyMedium
-                        )
-                    }
                 }
-            }
 
+            }
         }
     }
 }

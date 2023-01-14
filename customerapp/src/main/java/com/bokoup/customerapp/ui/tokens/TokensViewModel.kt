@@ -30,6 +30,8 @@ class TokensViewModel @Inject constructor(
         }
     }
 
+    val isLoading = tokenAccountsResourceConsumer.isLoading
+
     init {
         tokenAccountsResourceConsumer.collectFlow(
             addressRepo.getActiveAddress()
