@@ -59,7 +59,10 @@ fun ApproveContent(
                 )
             }
             if (signature != null) {
-                Text(text = "Confirmed: $signature", modifier = Modifier.padding(vertical = 16.dp))
+                Text(
+                    text = "Confirmed: $signature",
+                    modifier = Modifier.padding(16.dp)
+                )
             }
         }
 

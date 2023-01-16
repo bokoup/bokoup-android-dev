@@ -24,4 +24,6 @@
 
     <string name="create_wallet">Create Wallet</string>
     <string name="transactions">Transactions</string>
+    <string name="transaction_received_description_template">Received %1$s</string>
+    <string name="transaction_redeemed_description_template">Redeemed</string>
 </resources>
