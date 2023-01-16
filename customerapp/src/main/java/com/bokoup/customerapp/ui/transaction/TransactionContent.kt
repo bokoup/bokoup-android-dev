@@ -23,6 +23,7 @@ import coil.compose.AsyncImage
 import com.bokoup.customerapp.R
 import com.bokoup.customerapp.dom.model.BokoupTransaction
 import com.bokoup.lib.Loading
+import com.dgsd.ksol.core.model.PublicKey
 import com.dgsd.ksol.core.model.TransactionSignature
 import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
@@ -41,6 +42,7 @@ interface ViewModelFactoryProvider {
 fun TransactionContent(
     padding: PaddingValues,
     transactionSignature: TransactionSignature,
+    openTokenDetails: (PublicKey) -> Unit,
 ) {
 
     val factory = EntryPointAccessors.fromActivity(
@@ -97,8 +99,12 @@ fun TransactionContent(
             ) {
                 AsyncImage(
                     model = txn.tokenInfo.imageUrl,
-                    modifier = Modifier.size(100.dp),
-                    contentDescription = null
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(100.dp)
+                        .clickable {
+                        openTokenDetails.invoke(txn.tokenInfo.address)
+                    },
                 )
             }
 
@@ -162,9 +168,12 @@ fun TransactionContent(
                 style = MaterialTheme.typography.labelLarge,
             )
             Spacer(modifier = Modifier.size(4.dp))
+
+
             Text(
                 style = MaterialTheme.typography.bodyLarge,
                 text = txn.signature,
+                color = MaterialTheme.colorScheme.primary,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
                 modifier = Modifier.clickable {

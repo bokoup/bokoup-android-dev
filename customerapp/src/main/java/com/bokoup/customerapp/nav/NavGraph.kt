@@ -86,6 +86,11 @@ fun NavGraph(navController: NavHostController, openDrawer: () -> Unit) {
                 openDrawer = openDrawer,
                 snackbarHostState = snackbarHostState,
                 transactionSignature = transactionSignature,
+                openTokenDetails = {
+                    navController.navigate(
+                        "${Screen.TokenDetail}/${it.toBase58String()}"
+                    )
+                }
             )
         }
         composable(

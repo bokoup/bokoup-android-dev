@@ -38,4 +38,5 @@
     <string name="transaction_details_title_signature">Signature</string>
     <string name="transaction_details_title_date">Date</string>
     <string name="token_details_my_history_title">History</string>
+    <string name="token_details_mint_address">Mint</string>
 </resources>

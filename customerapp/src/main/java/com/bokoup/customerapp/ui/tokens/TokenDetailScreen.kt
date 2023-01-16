@@ -1,6 +1,7 @@
 package com.bokoup.customerapp.ui.tokens
 
 
+import androidx.compose.material.ScaffoldState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable

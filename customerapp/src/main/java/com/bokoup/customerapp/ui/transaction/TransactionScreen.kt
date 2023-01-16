@@ -6,6 +6,7 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import com.bokoup.customerapp.nav.Screen
 import com.bokoup.customerapp.ui.common.AppScreen
+import com.dgsd.ksol.core.model.PublicKey
 import com.dgsd.ksol.core.model.TransactionSignature
 
 @Composable
@@ -14,13 +15,18 @@ fun TransactionScreen(
     snackbarHostState: SnackbarHostState,
     openDrawer: () -> Unit,
     transactionSignature: TransactionSignature,
+    openTokenDetails: (PublicKey) -> Unit,
 ) {
     AppScreen(
         snackbarHostState = snackbarHostState,
         openDrawer = openDrawer,
         screen = Screen.Transaction,
         content = {
-            TransactionContent(padding = it, transactionSignature = transactionSignature,)
+            TransactionContent(
+                padding = it,
+                transactionSignature = transactionSignature,
+                openTokenDetails = openTokenDetails,
+            )
         }
     )
 

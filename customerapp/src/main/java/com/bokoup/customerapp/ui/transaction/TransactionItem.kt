@@ -90,6 +90,7 @@ fun TransactionItem(
 
         AsyncImage(
             model = transaction.tokenInfo.imageUrl,
+            modifier = Modifier.size(72.dp),
             placeholder = painterResource(id = R.drawable.ic_bokoup_logo),
             contentDescription = null,
         )
