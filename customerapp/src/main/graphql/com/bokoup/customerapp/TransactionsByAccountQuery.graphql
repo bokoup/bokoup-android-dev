@@ -1,4 +1,4 @@
-query TransactionsByAccount($account: String!) {
+subscription TransactionsByAccount($account: String!) {
   promoTransactions(where: {tokenAccountObject: {owner: {_eq: $account}}}) {
     ...PromoTransactionFragment
   }

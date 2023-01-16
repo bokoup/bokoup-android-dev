@@ -1,4 +1,4 @@
-query TransactionBySignature($signature: String!) {
+subscription TransactionBySignature($signature: String!) {
   promoTransactions(where: {signature: {_eq: $signature}}) {
     ...PromoTransactionFragment
   }

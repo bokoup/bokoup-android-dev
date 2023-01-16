@@ -4,8 +4,8 @@ import com.apollographql.apollo3.ApolloCall
 import com.apollographql.apollo3.ApolloClient
 import com.bokoup.customerapp.MintByIdQuery
 import com.bokoup.customerapp.TokenAccountListSubscription
-import com.bokoup.customerapp.TransactionBySignatureQuery
-import com.bokoup.customerapp.TransactionsByAccountQuery
+import com.bokoup.customerapp.TransactionBySignatureSubscription
+import com.bokoup.customerapp.TransactionsByAccountSubscription
 import com.bokoup.customerapp.dom.model.Address
 import com.dgsd.ksol.core.model.TransactionSignature
 
@@ -27,13 +27,13 @@ class DataService(
 
     fun getTransactionsByAccount(
         address: Address
-    ): ApolloCall<TransactionsByAccountQuery.Data> {
-        return apolloClient.query(TransactionsByAccountQuery(address.id))
+    ): ApolloCall<TransactionsByAccountSubscription.Data> {
+        return apolloClient.subscription(TransactionsByAccountSubscription(address.id))
     }
 
     fun getTransactionBySignature(
         signature: TransactionSignature,
-    ): ApolloCall<TransactionBySignatureQuery.Data> {
-        return apolloClient.query(TransactionBySignatureQuery(signature))
+    ): ApolloCall<TransactionBySignatureSubscription.Data> {
+        return apolloClient.subscription(TransactionBySignatureSubscription(signature))
     }
 }
