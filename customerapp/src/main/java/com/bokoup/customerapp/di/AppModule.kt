@@ -80,12 +80,6 @@ class AppModule {
 
     @Singleton
     @Provides
-    fun tokenDao(
-        chainDb: ChainDb,
-    ) = chainDb.tokenDao()
-
-    @Singleton
-    @Provides
     fun okHttp(
     ) = OkHttpClient.Builder().apply {
         addInterceptor(interceptor = HttpLoggingInterceptor().apply {
@@ -120,10 +114,8 @@ class AppModule {
     @Singleton
     @Provides
     fun tokenRepo(
-        tokenDao: TokenDao,
         solPay: SolPay,
     ): TokenRepo = TokenRepoImpl(
-        tokenDao = tokenDao,
         solPay = solPay,
     )
 

@@ -1,6 +1,5 @@
 package com.bokoup.customerapp.data.repo
 
-import com.bokoup.customerapp.data.net.TokenDao
 import com.bokoup.customerapp.dom.repo.TokenRepo
 import com.bokoup.lib.Resource
 import com.bokoup.lib.resourceFlowOf
@@ -12,10 +11,8 @@ import com.dgsd.ksol.solpay.model.SolPayTransactionRequestDetails
 import kotlinx.coroutines.flow.Flow
 
 class TokenRepoImpl(
-    private val tokenDao: TokenDao,
     private val solPay: SolPay,
 ) : TokenRepo {
-    override fun getTokensFromRoom() = tokenDao.getTokens()
     override fun getApiId(
         url: String,
     ): Flow<Resource<SolPayTransactionRequestDetails>> {
