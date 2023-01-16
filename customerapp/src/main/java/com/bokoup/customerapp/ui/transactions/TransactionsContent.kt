@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
@@ -43,6 +44,19 @@ fun TransactionsContent(
                 .padding(padding)
         ) {
             Loading(isLoading = true)
+        }
+    } else if (transactions.isEmpty()) {
+        Column(
+            verticalArrangement = Arrangement.Center,
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(padding),
+        ) {
+            Text(
+                text = stringResource(R.string.transactions_empty_message),
+                modifier = Modifier.padding(16.dp).fillMaxWidth(),
+                textAlign = TextAlign.Center
+            )
         }
     } else {
         LazyColumn(
