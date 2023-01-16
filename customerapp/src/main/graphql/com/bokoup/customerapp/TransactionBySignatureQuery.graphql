@@ -1,0 +1,5 @@
+query TransactionBySignature($signature: String!) {
+  promoTransactions(where: {signature: {_eq: $signature}}) {
+    ...PromoTransactionFragment
+  }
+}

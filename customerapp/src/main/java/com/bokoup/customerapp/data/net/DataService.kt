@@ -3,8 +3,10 @@ package com.bokoup.customerapp.data.net
 import com.apollographql.apollo3.ApolloCall
 import com.apollographql.apollo3.ApolloClient
 import com.bokoup.customerapp.TokenAccountListSubscription
+import com.bokoup.customerapp.TransactionBySignatureQuery
 import com.bokoup.customerapp.TransactionsByAccountQuery
 import com.bokoup.customerapp.dom.model.Address
+import com.dgsd.ksol.core.model.TransactionSignature
 
 class DataService(
     private val apolloClient: ApolloClient
@@ -16,9 +18,15 @@ class DataService(
         return apolloClient.subscription(TokenAccountListSubscription(address.id))
     }
 
-    fun getTransactonsByAccount(
+    fun getTransactionsByAccount(
         address: Address
     ): ApolloCall<TransactionsByAccountQuery.Data> {
         return apolloClient.query(TransactionsByAccountQuery(address.id))
+    }
+
+    fun getTransactionBySignature(
+        signature: TransactionSignature,
+    ): ApolloCall<TransactionBySignatureQuery.Data> {
+        return apolloClient.query(TransactionBySignatureQuery(signature))
     }
 }

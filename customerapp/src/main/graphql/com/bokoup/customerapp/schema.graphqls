@@ -1148,6 +1148,233 @@ input PromoStreamCursorValueInput {
 }
 
 """
+columns and relationships of "promo_transactions"
+"""
+type PromoTransactions {
+  authority: String
+  createdAt: timestamptz
+  memo(
+    """JSON select path"""
+    path: String
+  ): jsonb
+  mint: String
+
+  """An object relationship"""
+  mintObject: Mint
+  modifiedAt: timestamptz
+  payer: String
+  promo: String
+  promoGroup: String
+  signature: String
+  slot: bigint
+  tokenAccount: String
+
+  """An object relationship"""
+  tokenAccountObject: TokenAccount
+  transactionType: String
+}
+
+"""
+Boolean expression to filter rows from the table "promo_transactions". All fields are combined with a logical 'AND'.
+"""
+input PromoTransactionsBoolExp {
+  _and: [PromoTransactionsBoolExp!]
+  _not: PromoTransactionsBoolExp
+  _or: [PromoTransactionsBoolExp!]
+  authority: StringComparisonExp
+  createdAt: TimestamptzComparisonExp
+  memo: JsonbComparisonExp
+  mint: StringComparisonExp
+  mintObject: MintBoolExp
+  modifiedAt: TimestamptzComparisonExp
+  payer: StringComparisonExp
+  promo: StringComparisonExp
+  promoGroup: StringComparisonExp
+  signature: StringComparisonExp
+  slot: BigintComparisonExp
+  tokenAccount: StringComparisonExp
+  tokenAccountObject: TokenAccountBoolExp
+  transactionType: StringComparisonExp
+}
+
+"""Ordering options when selecting data from "promo_transactions"."""
+input PromoTransactionsOrderBy {
+  authority: OrderBy
+  createdAt: OrderBy
+  memo: OrderBy
+  mint: OrderBy
+  mintObject: MintOrderBy
+  modifiedAt: OrderBy
+  payer: OrderBy
+  promo: OrderBy
+  promoGroup: OrderBy
+  signature: OrderBy
+  slot: OrderBy
+  tokenAccount: OrderBy
+  tokenAccountObject: TokenAccountOrderBy
+  transactionType: OrderBy
+}
+
+"""
+select columns of table "promo_transactions"
+"""
+enum PromoTransactionsSelectColumn {
+  """column name"""
+  authority
+
+  """column name"""
+  createdAt
+
+  """column name"""
+  memo
+
+  """column name"""
+  mint
+
+  """column name"""
+  modifiedAt
+
+  """column name"""
+  payer
+
+  """column name"""
+  promo
+
+  """column name"""
+  promoGroup
+
+  """column name"""
+  signature
+
+  """column name"""
+  slot
+
+  """column name"""
+  tokenAccount
+
+  """column name"""
+  transactionType
+}
+
+"""
+Streaming cursor of the table "promo_transactions"
+"""
+input PromoTransactionsStreamCursorInput {
+  """Stream column input with initial value"""
+  initialValue: PromoTransactionsStreamCursorValueInput!
+
+  """cursor ordering"""
+  ordering: CursorOrdering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input PromoTransactionsStreamCursorValueInput {
+  authority: String
+  createdAt: timestamptz
+  memo: jsonb
+  mint: String
+  modifiedAt: timestamptz
+  payer: String
+  promo: String
+  promoGroup: String
+  signature: String
+  slot: bigint
+  tokenAccount: String
+  transactionType: String
+}
+
+"""
+columns and relationships of "sign_memo"
+"""
+type SignMemo {
+  createdAt: timestamptz!
+  memo(
+    """JSON select path"""
+    path: String
+  ): jsonb
+  modifiedAt: timestamptz!
+  payer: String!
+  signature: String!
+  signer: String!
+  slot: bigint!
+}
+
+"""
+Boolean expression to filter rows from the table "sign_memo". All fields are combined with a logical 'AND'.
+"""
+input SignMemoBoolExp {
+  _and: [SignMemoBoolExp!]
+  _not: SignMemoBoolExp
+  _or: [SignMemoBoolExp!]
+  createdAt: TimestamptzComparisonExp
+  memo: JsonbComparisonExp
+  modifiedAt: TimestamptzComparisonExp
+  payer: StringComparisonExp
+  signature: StringComparisonExp
+  signer: StringComparisonExp
+  slot: BigintComparisonExp
+}
+
+"""Ordering options when selecting data from "sign_memo"."""
+input SignMemoOrderBy {
+  createdAt: OrderBy
+  memo: OrderBy
+  modifiedAt: OrderBy
+  payer: OrderBy
+  signature: OrderBy
+  signer: OrderBy
+  slot: OrderBy
+}
+
+"""
+select columns of table "sign_memo"
+"""
+enum SignMemoSelectColumn {
+  """column name"""
+  createdAt
+
+  """column name"""
+  memo
+
+  """column name"""
+  modifiedAt
+
+  """column name"""
+  payer
+
+  """column name"""
+  signature
+
+  """column name"""
+  signer
+
+  """column name"""
+  slot
+}
+
+"""
+Streaming cursor of the table "sign_memo"
+"""
+input SignMemoStreamCursorInput {
+  """Stream column input with initial value"""
+  initialValue: SignMemoStreamCursorValueInput!
+
+  """cursor ordering"""
+  ordering: CursorOrdering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input SignMemoStreamCursorValueInput {
+  createdAt: timestamptz
+  memo: jsonb
+  modifiedAt: timestamptz
+  payer: String
+  signature: String
+  signer: String
+  slot: bigint
+}
+
+"""
 Boolean expression to compare columns of type "String". All fields are combined with logical 'AND'.
 """
 input StringComparisonExp {
@@ -1672,6 +1899,49 @@ type query_root {
   promoGroupByPk(id: String!): PromoGroup
 
   """
+  fetch data from the table: "promo_transactions"
+  """
+  promoTransactions(
+    """distinct select on columns"""
+    distinctOn: [PromoTransactionsSelectColumn!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    orderBy: [PromoTransactionsOrderBy!]
+
+    """filter the rows returned"""
+    where: PromoTransactionsBoolExp
+  ): [PromoTransactions!]!
+
+  """
+  fetch data from the table: "sign_memo"
+  """
+  signMemo(
+    """distinct select on columns"""
+    distinctOn: [SignMemoSelectColumn!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    orderBy: [SignMemoOrderBy!]
+
+    """filter the rows returned"""
+    where: SignMemoBoolExp
+  ): [SignMemo!]!
+
+  """fetch data from the table: "sign_memo" using primary key columns"""
+  signMemoByPk(signature: String!): SignMemo
+
+  """
   fetch data from the table: "token_account"
   """
   tokenAccount(
@@ -1960,6 +2230,77 @@ type subscription_root {
     """filter the rows returned"""
     where: PromoBoolExp
   ): [Promo!]!
+
+  """
+  fetch data from the table: "promo_transactions"
+  """
+  promoTransactions(
+    """distinct select on columns"""
+    distinctOn: [PromoTransactionsSelectColumn!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    orderBy: [PromoTransactionsOrderBy!]
+
+    """filter the rows returned"""
+    where: PromoTransactionsBoolExp
+  ): [PromoTransactions!]!
+
+  """
+  fetch data from the table in a streaming manner: "promo_transactions"
+  """
+  promoTransactionsStream(
+    """maximum number of rows returned in a single batch"""
+    batchSize: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [PromoTransactionsStreamCursorInput]!
+
+    """filter the rows returned"""
+    where: PromoTransactionsBoolExp
+  ): [PromoTransactions!]!
+
+  """
+  fetch data from the table: "sign_memo"
+  """
+  signMemo(
+    """distinct select on columns"""
+    distinctOn: [SignMemoSelectColumn!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    orderBy: [SignMemoOrderBy!]
+
+    """filter the rows returned"""
+    where: SignMemoBoolExp
+  ): [SignMemo!]!
+
+  """fetch data from the table: "sign_memo" using primary key columns"""
+  signMemoByPk(signature: String!): SignMemo
+
+  """
+  fetch data from the table in a streaming manner: "sign_memo"
+  """
+  signMemoStream(
+    """maximum number of rows returned in a single batch"""
+    batchSize: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [SignMemoStreamCursorInput]!
+
+    """filter the rows returned"""
+    where: SignMemoBoolExp
+  ): [SignMemo!]!
 
   """
   fetch data from the table: "token_account"

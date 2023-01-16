@@ -1,0 +1,16 @@
+fragment PromoTransactionFragment on PromoTransactions {
+    signature
+    modifiedAt
+    merchantName: promoGroup
+    transactionType
+    mintObject {
+        promoObject {
+            metadataObject {
+                id
+                name
+                symbol
+                image: metadataJson(path: "image")
+            }
+        }
+    }
+}

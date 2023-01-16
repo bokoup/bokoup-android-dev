@@ -1,6 +1,7 @@
 package com.bokoup.customerapp.ui.transactions
 
 import android.text.format.DateUtils
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -26,11 +27,14 @@ import coil.compose.AsyncImage
 import com.bokoup.customerapp.R
 import com.bokoup.customerapp.dom.model.BokoupTransaction
 import com.bokoup.lib.Loading
+import com.dgsd.ksol.core.model.TransactionSignature
 
 @Composable
 @ExperimentalMaterial3Api
 fun TransactionsContent(
-    padding: PaddingValues, viewModel: TransactionsViewModel = hiltViewModel()
+    padding: PaddingValues,
+    onTransactionClicked: (TransactionSignature) -> Unit,
+    viewModel: TransactionsViewModel = hiltViewModel(),
 ) {
 
     val transactions by viewModel.transactions.collectAsState(emptyList())
@@ -70,7 +74,9 @@ fun TransactionsContent(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier.padding(
                         horizontal = 16.dp, vertical = 4.dp
-                    ),
+                    ).clickable {
+                        onTransactionClicked.invoke(transaction.signature)
+                    },
                 ) {
                     Icon(
                         imageVector = when (transaction.type) {
@@ -109,8 +115,8 @@ fun TransactionsContent(
                                 transaction.timestamp.toEpochSecond() * 1000,
                                 DateUtils.FORMAT_ABBREV_ALL or
                                         DateUtils.FORMAT_SHOW_WEEKDAY or
-                                        DateUtils.FORMAT_ABBREV_TIME or
-                                        DateUtils.FORMAT_SHOW_DATE
+                                        DateUtils.FORMAT_SHOW_DATE or
+                                        DateUtils.FORMAT_SHOW_TIME
                             ),
                             style = MaterialTheme.typography.bodyLarge,
                             color = MaterialTheme.colorScheme.onSurfaceVariant

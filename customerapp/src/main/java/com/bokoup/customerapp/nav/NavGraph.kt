@@ -15,6 +15,7 @@ import com.bokoup.customerapp.ui.approve.ApproveScreen
 import com.bokoup.customerapp.ui.scan.ScanScreen
 import com.bokoup.customerapp.ui.share.ShareScreen
 import com.bokoup.customerapp.ui.tokens.TokensScreen
+import com.bokoup.customerapp.ui.transaction.TransactionScreen
 import com.bokoup.customerapp.ui.transactions.TransactionsScreen
 import com.bokoup.customerapp.ui.wallet.WalletScreen
 import kotlinx.coroutines.channels.Channel
@@ -60,7 +61,25 @@ fun NavGraph(navController: NavHostController, openDrawer: () -> Unit) {
         composable(
             route = Screen.Transactions.name
         ) {
-            TransactionsScreen(openDrawer = openDrawer, snackbarHostState = snackbarHostState)
+            TransactionsScreen(
+                openDrawer = openDrawer,
+                snackbarHostState = snackbarHostState,
+                onTransactionClicked = {
+                    navController.navigate(
+                        "${Screen.Transaction.name}?signature=${it}"
+                    )
+                }
+            )
+        }
+        composable(
+            route = "${Screen.Transaction.name}?signature={signature}"
+        ) { backStackEntry ->
+            val transactionSignature = backStackEntry.arguments?.getString("signature").orEmpty()
+            TransactionScreen(
+                openDrawer = openDrawer,
+                snackbarHostState = snackbarHostState,
+                transactionSignature = transactionSignature,
+            )
         }
         composable(
             route = Screen.Share.name

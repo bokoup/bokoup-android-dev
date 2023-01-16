@@ -1,31 +1,5 @@
 query TransactionsByAccount($account: String!) {
-  mintPromoToken(where: {tokenOwner: {_eq: $account}}) {
-    signature
-    modifiedAt
-    merchantName:promoGroup
-    mintObject {
-      promoObject {
-        ...PromoObjectFields
-      }
-    }
-  }
-  burnDelegatedPromoToken(where: {tokenAccountObject: {owner: {_eq: $account}}}) {
-    signature
-    modifiedAt
-    merchantName:promoGroup
-    mintObject {
-      promoObject {
-        ...PromoObjectFields
-      }
-    }
-  }
-}
-
-fragment PromoObjectFields on Promo {
-  metadataObject {
-    id
-    name
-    symbol
-    image: metadataJson(path: "image")
+  promoTransactions(where: {tokenAccountObject: {owner: {_eq: $account}}}) {
+    ...PromoTransactionFragment
   }
 }

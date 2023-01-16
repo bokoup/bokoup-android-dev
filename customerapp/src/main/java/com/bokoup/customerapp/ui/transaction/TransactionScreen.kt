@@ -1,4 +1,4 @@
-package com.bokoup.customerapp.ui.transactions
+package com.bokoup.customerapp.ui.transaction
 
 
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -10,16 +10,18 @@ import com.dgsd.ksol.core.model.TransactionSignature
 
 @Composable
 @ExperimentalMaterial3Api
-fun TransactionsScreen(
+fun TransactionScreen(
     snackbarHostState: SnackbarHostState,
     openDrawer: () -> Unit,
-    onTransactionClicked: (TransactionSignature) -> Unit,
+    transactionSignature: TransactionSignature,
 ) {
     AppScreen(
         snackbarHostState = snackbarHostState,
         openDrawer = openDrawer,
-        screen = Screen.Transactions,
-        content = { TransactionsContent(padding = it, onTransactionClicked) }
+        screen = Screen.Transaction,
+        content = {
+            TransactionContent(padding = it, transactionSignature = transactionSignature,)
+        }
     )
 
 }
