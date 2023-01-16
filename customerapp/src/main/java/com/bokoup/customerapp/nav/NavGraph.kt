@@ -14,6 +14,7 @@ import androidx.navigation.navArgument
 import com.bokoup.customerapp.ui.approve.ApproveScreen
 import com.bokoup.customerapp.ui.scan.ScanScreen
 import com.bokoup.customerapp.ui.share.ShareScreen
+import com.bokoup.customerapp.ui.tokens.TokenDetailScreen
 import com.bokoup.customerapp.ui.tokens.TokensScreen
 import com.bokoup.customerapp.ui.transaction.TransactionScreen
 import com.bokoup.customerapp.ui.transactions.TransactionsScreen
@@ -49,7 +50,13 @@ fun NavGraph(navController: NavHostController, openDrawer: () -> Unit) {
         composable(
             route = Screen.Tokens.name
         ) {
-            TokensScreen(openDrawer = openDrawer, snackbarHostState = snackbarHostState)
+            TokensScreen(
+                openDrawer = openDrawer,
+                snackbarHostState = snackbarHostState,
+                onTokenClicked = {
+                    navController.navigate("${Screen.TokenDetail.name}/$it")
+                }
+            )
         }
         composable(
             route = Screen.Wallet.name
@@ -120,8 +127,17 @@ fun NavGraph(navController: NavHostController, openDrawer: () -> Unit) {
                 type = NavType.StringType
             })
         ) { backStackEntry ->
-            val tokenId = backStackEntry.arguments?.getString("tokenId") ?: ""
-            TODO()
+            val tokenId = checkNotNull(backStackEntry.arguments?.getString("tokenId"))
+            TokenDetailScreen(
+                openDrawer = openDrawer,
+                snackbarHostState = snackbarHostState,
+                tokenId = tokenId,
+                onTransactionClicked = {
+                    navController.navigate(
+                        "${Screen.Transaction.name}?signature=${it}"
+                    )
+                }
+            )
         }
     }
 }

@@ -1,0 +1,5 @@
+query MintById($mintId: String!) {
+    mint(where: {id: {_eq: $mintId}}) {
+        ...MintInfoFragment
+    }
+}

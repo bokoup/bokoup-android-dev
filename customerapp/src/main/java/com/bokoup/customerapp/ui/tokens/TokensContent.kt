@@ -22,7 +22,8 @@ import com.bokoup.lib.Loading
 @ExperimentalMaterial3Api
 fun TokensContent(
     padding: PaddingValues,
-    viewModel: TokensViewModel = hiltViewModel()
+    onTokenClicked: (String) -> Unit,
+    viewModel: TokensViewModel = hiltViewModel(),
 ) {
     val uriHandler = LocalUriHandler.current
 
@@ -61,11 +62,14 @@ fun TokensContent(
         ) {
             for (tokenAccount in tokenAccounts) {
                 val link =
-                    "https://explorer.solana.com/address/" + tokenAccount.mintObject?.id + "?cluster=devnet"
+                    "https://explorer.solana.com/address/" + tokenAccount.mintObject?.mintInfoFragment?.id + "?cluster=devnet"
                 ElevatedCard(
                     modifier = Modifier
                         .width(284.dp)
-                        .padding(8.dp)
+                        .padding(8.dp),
+                    onClick = {
+                        onTokenClicked.invoke(checkNotNull(tokenAccount.mintObject).mintInfoFragment.id)
+                    }
                 ) {
                     Column(
                         modifier = Modifier.fillMaxWidth(),
@@ -84,15 +88,15 @@ fun TokensContent(
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Text(
-                                text = tokenAccount.mintObject?.promoObject?.metadataObject!!.name,
+                                text = tokenAccount.mintObject?.mintInfoFragment?.promoObject?.metadataObject!!.name,
                                 style = MaterialTheme.typography.titleMedium
                             )
                             TextButton(onClick = { uriHandler.openUri(link) }) {
-                                Text(text = tokenAccount.mintObject.id.slice(0..8) ?: "")
+                                Text(text = tokenAccount.mintObject?.mintInfoFragment.id.slice(0..8).orEmpty())
                             }
                         }
                         AsyncImage(
-                            model = tokenAccount.mintObject?.promoObject?.metadataObject?.image,
+                            model = tokenAccount.mintObject?.mintInfoFragment?.promoObject?.metadataObject?.image,
                             modifier = Modifier
                                 .padding(6.dp)
                                 .width(324.dp),
@@ -105,7 +109,7 @@ fun TokensContent(
                             horizontalArrangement = Arrangement.Start
                         ) {
                             Text(
-                                text = tokenAccount.mintObject?.promoObject?.metadataObject?.description.toString(),
+                                text = tokenAccount.mintObject?.mintInfoFragment?.promoObject?.metadataObject?.description.toString(),
                                 style = MaterialTheme.typography.bodySmall
                             )
                         }

@@ -26,6 +26,10 @@
     <string name="transactions">Transactions</string>
     <string name="transaction_received_description_template">Received %1$s</string>
     <string name="transaction_redeemed_description_template">Redeemed %1$s</string>
+
+    <string name="token_details_received_description">Received</string>
+    <string name="token_details_redeemed_description">Redeemed</string>
+
     <string name="transactions_empty_message">No transactions yet</string>
     <string name="tokens_empty_message">No tokens yet</string>
     <string name="transaction">Transaction Details</string>
@@ -33,4 +37,5 @@
     <string name="transaction_details_title_merchant">Merchant</string>
     <string name="transaction_details_title_signature">Signature</string>
     <string name="transaction_details_title_date">Date</string>
+    <string name="token_details_my_history_title">History</string>
 </resources>

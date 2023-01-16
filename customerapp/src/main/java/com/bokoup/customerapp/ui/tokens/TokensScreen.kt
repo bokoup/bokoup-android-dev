@@ -13,12 +13,14 @@ import androidx.compose.ui.res.stringResource
 import com.bokoup.customerapp.R
 import com.bokoup.customerapp.nav.Screen
 import com.bokoup.customerapp.ui.common.AppScreen
+import com.dgsd.ksol.core.model.TransactionSignature
 
 @Composable
 @ExperimentalMaterial3Api
 fun TokensScreen(
     snackbarHostState: SnackbarHostState,
-    openDrawer: () -> Unit
+    openDrawer: () -> Unit,
+    onTokenClicked: (String) -> Unit,
 ) {
     val actions: @Composable (RowScope.() -> Unit) = {
         IconButton(onClick = { /* TODO: Open search */ }) {
@@ -33,7 +35,7 @@ fun TokensScreen(
         openDrawer = openDrawer,
         screen = Screen.Tokens,
         topBarActions = actions,
-        content = { TokensContent(padding = it) }
+        content = { TokensContent(padding = it, onTokenClicked) }
     )
 
 }

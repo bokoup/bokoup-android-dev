@@ -1,5 +1,6 @@
 package com.bokoup.customerapp.data.repo
 
+import com.bokoup.customerapp.MintByIdQuery
 import com.bokoup.customerapp.TokenAccountListSubscription
 import com.bokoup.customerapp.data.net.DataService
 import com.bokoup.customerapp.dom.model.Address
@@ -8,6 +9,7 @@ import com.bokoup.customerapp.dom.repo.DataRepo
 import com.bokoup.customerapp.fragment.PromoTransactionFragment
 import com.bokoup.lib.Resource
 import com.bokoup.lib.asResourceFlow
+import com.bokoup.lib.mapData
 import com.dgsd.ksol.core.model.PublicKey
 import com.dgsd.ksol.core.model.TransactionSignature
 import kotlinx.coroutines.flow.Flow
@@ -40,7 +42,26 @@ class DataRepoImpl(private val dataService: DataService) : DataRepo {
                     .sortedByDescending { it.timestamp }
             }
             .asResourceFlow()
+    }
 
+    override fun getTransactionByAddressAndToken(
+        address: Address,
+        token: PublicKey,
+    ): Flow<Resource<List<BokoupTransaction>>> {
+        return getTransactionsByAccount(address)
+            .mapData { allTransactions ->
+                allTransactions.filter {
+                    it.tokenInfo.address == token
+                }
+            }
+    }
+
+    override fun getMintTokenInfo(mint: PublicKey): Flow<Resource<MintByIdQuery.Mint>> {
+        return dataService.getTokenByMintId(mint.toBase58String())
+            .toFlow()
+            .map { it.dataAssertNoErrors }
+            .map { it.mint.single() }
+            .asResourceFlow()
     }
 
     override fun getTransaction(
@@ -66,6 +87,11 @@ class DataRepoImpl(private val dataService: DataService) : DataRepo {
             return null
         }
 
+        val mintId = data.mintObject?.id
+        if (mintId == null) {
+            return null
+        }
+
         val metadataObject = data.mintObject?.promoObject?.metadataObject
         if (metadataObject == null) {
             return null
@@ -86,15 +112,16 @@ class DataRepoImpl(private val dataService: DataService) : DataRepo {
             type = type,
             merchantName = data.merchantName,
             timestamp = OffsetDateTime.parse(data.modifiedAt as String),
-            tokenInfo = createTokenInfo(metadataObject)
+            tokenInfo = createTokenInfo(mintId, metadataObject)
         )
     }
 
     private fun createTokenInfo(
+        mintId: String,
         data: PromoTransactionFragment.MetadataObject
     ): BokoupTransaction.TokenInfo {
         return BokoupTransaction.TokenInfo(
-            address = PublicKey.fromBase58(data.id),
+            address = PublicKey.fromBase58(mintId),
             name = data.name,
             symbol = data.symbol,
             imageUrl = data.image as String

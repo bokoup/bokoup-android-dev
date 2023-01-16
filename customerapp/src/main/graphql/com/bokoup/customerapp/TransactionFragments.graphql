@@ -4,6 +4,7 @@ fragment PromoTransactionFragment on PromoTransactions {
     merchantName: promoGroup
     transactionType
     mintObject {
+        id
         promoObject {
             metadataObject {
                 id

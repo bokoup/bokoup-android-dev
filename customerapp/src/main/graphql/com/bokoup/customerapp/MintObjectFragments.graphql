@@ -1,0 +1,12 @@
+fragment MintInfoFragment on Mint {
+    id
+    promoObject {
+        metadataObject {
+            name
+            symbol
+            image: metadataJson(path: "image")
+            description: metadataJson(path: "description")
+            modifiedAt
+        }
+    }
+}

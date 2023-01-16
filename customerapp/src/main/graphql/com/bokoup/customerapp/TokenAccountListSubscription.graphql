@@ -8,16 +8,7 @@ subscription TokenAccountListSubscription($ownedBy: String!) {
     amount
     delegatedAmount
     mintObject {
-      id
-      promoObject {
-        metadataObject {
-          name
-          symbol
-          image: metadataJson(path: "image")
-          description: metadataJson(path: "description")
-          modifiedAt
-        }
-      }
+      ...MintInfoFragment
     }
   }
 }
