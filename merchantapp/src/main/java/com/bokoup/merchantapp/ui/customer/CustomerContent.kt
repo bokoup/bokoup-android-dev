@@ -157,7 +157,7 @@ fun CustomerContent(
                                     textAlign = TextAlign.End,
                                     text = "Tap to save $${
                                         DecimalFormat("#,###.##").format(
-                                            tokenAccount.discount.toDouble() / 100
+                                            tokenAccount.discountValue.toDouble() / 100
                                         )
                                     }!",
                                     style = MaterialTheme.typography.bodyLarge

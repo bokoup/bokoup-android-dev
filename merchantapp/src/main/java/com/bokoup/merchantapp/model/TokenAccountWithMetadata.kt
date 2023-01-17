@@ -8,6 +8,7 @@ data class TokenAccountWithMetadata(
     val image: String,
     val description: String,
     val attributes: Map<String, String>,
-    var discount: Long = 0,
+    var orderTotal: Long = 0,
+    var discountValue: Long = 0,
     var selected: Boolean = false
 )

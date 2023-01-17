@@ -80,7 +80,8 @@ class PromoRepoImpl(
                 }
             }
             eligibleBuyXCurrencyPromos.map { it ->
-                it.discount = it.attributes["getYPercent"]?.toLong()!! * order.total / 100; it
+                it.orderTotal = order.total
+                it.discountValue = it.attributes["getYPercent"]?.toLong()!! * order.total / 100; it
             }
         }
 
@@ -108,7 +109,7 @@ class PromoRepoImpl(
             "image",
             contentInfo!!.first,
             stream!!.readBytes()
-                .toRequestBody(contentType.toMediaType(), 0, contentInfo!!.second)
+                .toRequestBody(contentType.toMediaType(), 0, contentInfo.second)
         )
 
         val response =

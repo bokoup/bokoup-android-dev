@@ -40,7 +40,7 @@ class CustomerViewModel @Inject constructor(
         val mintString = tokenAccount.tokenAccount.mintObject?.id
         val message =
             "Approve to delegate one ${tokenAccount.tokenAccount.mintObject?.promoObject?.metadataObject?.name} token"
-        val memo = DelegateMemo(orderId, timestamp)
+        val memo = DelegateMemo(orderId, timestamp, tokenAccount.orderTotal, tokenAccount.discountValue)
         val memoJson = Gson().toJson(memo)
 
         qrCodeConsumer.collectFlow(resourceFlowOf {
@@ -70,7 +70,7 @@ class CustomerViewModel @Inject constructor(
 
     fun approve(activity: Activity) {
         activity.setResult(RESULT_OK)
-        activity.finish();
+        activity.finish()
     }
 
     fun getOrder(orderId: String) {

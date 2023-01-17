@@ -55,10 +55,12 @@ class PaymentBroadcastReceiver : BroadcastReceiver() {
                 val delegatedToken = dataService.fetchDelegatedToken(orderId, delegate)
                 Log.d(TAG, delegatedToken.toString())
                 if (delegatedToken != null) {
-                    val keyPair = settingsRepo.getKeyPair();
+                    val keyPair = settingsRepo.getKeyPair()
                     checkNotNull(keyPair) { "PublicKeyString was null" }
                     val memo = BurnDelegatedMemo(
                         orderId = orderId,
+                        orderTotal = delegatedToken.orderTotal as Int,
+                        discountValue = delegatedToken.discountValue as Int,
                         paymentId = paymentId,
                         delegateSignature = delegatedToken.signature
                     )

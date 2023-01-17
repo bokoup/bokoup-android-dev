@@ -20,7 +20,8 @@ class DataService(private val apolloClient: ApolloClient) {
     fun getDelegateTokenSubscription() = apolloClient.subscription(DelegateTokenSubscription())
 
     suspend fun fetchDelegatedToken(orderId: String, publicKeyString: String): DelegatedTokenQuery.DelegatePromoToken? {
-        val response = apolloClient.query(DelegatedTokenQuery(Optional.Present(orderId), Optional.Present(publicKeyString))).execute()
+
+        val response = apolloClient.query(DelegatedTokenQuery(Optional.Present(mapOf("orderId" to orderId)), Optional.Present(publicKeyString))).execute()
         return response.data?.delegatePromoToken?.firstOrNull()
     }
 
