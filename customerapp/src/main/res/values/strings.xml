@@ -39,4 +39,8 @@
     <string name="transaction_details_title_date">Date</string>
     <string name="token_details_my_history_title">History</string>
     <string name="token_details_mint_address">Mint</string>
+    <string name="transaction_details_title_order_id">Order ID</string>
+    <string name="transaction_details_title_payment_id">Payment ID</string>
+    <string name="transaction_details_title_order_total">Order total</string>
+    <string name="transaction_details_title_discount_value">Discount value</string>
 </resources>

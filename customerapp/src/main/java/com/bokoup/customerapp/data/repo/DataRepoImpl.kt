@@ -111,6 +111,10 @@ class DataRepoImpl(private val dataService: DataService) : DataRepo {
             signature = data.signature,
             type = type,
             merchantName = data.merchantName,
+            orderId = data.orderId as? String,
+            paymentId = data.paymentId as? String,
+            orderTotal = data.orderTotal as? Int,
+            discountValue = data.discountValue as? Float?,
             timestamp = OffsetDateTime.parse(data.modifiedAt as String),
             tokenInfo = createTokenInfo(mintId, metadataObject)
         )

@@ -9,6 +9,10 @@ data class BokoupTransaction(
     val signature: TransactionSignature,
     val timestamp: OffsetDateTime,
     val merchantName: String,
+    val orderId: String?,
+    val paymentId: String?,
+    val orderTotal: Int?,
+    val discountValue: Float?,
     val type: Type,
     val tokenInfo: TokenInfo,
 ) {
