@@ -166,17 +166,6 @@ fun SwipeButton(
             backgroundColor = backgroundColor,
         )
         AnimatedVisibility(
-            visible = swipeComplete && !isComplete,
-        ) {
-            CircularProgressIndicator(
-                color = MaterialTheme.colorScheme.tertiary,
-                strokeWidth = ButtonDefaults.outlinedButtonBorder.width,
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(6.dp)
-            )
-        }
-        AnimatedVisibility(
             visible = swipeComplete && isComplete,
             enter = fadeIn(),
             exit = fadeOut(),
