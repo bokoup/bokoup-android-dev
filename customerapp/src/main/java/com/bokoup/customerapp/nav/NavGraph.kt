@@ -45,7 +45,7 @@ fun NavGraph(navController: NavHostController, openDrawer: () -> Unit) {
     }
 
     NavHost(
-        navController = navController, startDestination = Screen.Scan.name
+        navController = navController, startDestination = Screen.Tokens.name
     ) {
         composable(
             route = Screen.Tokens.name
