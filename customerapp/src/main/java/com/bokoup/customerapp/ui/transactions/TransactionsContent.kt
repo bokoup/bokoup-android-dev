@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -26,8 +27,8 @@ fun TransactionsContent(
     viewModel: TransactionsViewModel = hiltViewModel(),
 ) {
 
+    val summaryText by viewModel.summaryText.collectAsState(null)
     val transactions by viewModel.transactions.collectAsState(emptyList())
-
     val isLoading by viewModel.isLoading.collectAsState(false)
 
     if (isLoading) {
@@ -47,19 +48,37 @@ fun TransactionsContent(
         ) {
             Text(
                 text = stringResource(R.string.transactions_empty_message),
-                modifier = Modifier.padding(16.dp).fillMaxWidth(),
+                modifier = Modifier
+                    .padding(16.dp)
+                    .fillMaxWidth(),
                 textAlign = TextAlign.Center
             )
         }
     } else {
-        LazyColumn(
+        Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            items(items = transactions) { transaction ->
-                TransactionItem(transaction, onTransactionClicked)
+            if (summaryText != null) {
+                Text(
+                    text = summaryText.orEmpty(),
+                    modifier = Modifier
+                        .padding(16.dp)
+                        .fillMaxWidth(),
+                    textAlign = TextAlign.Center,
+                    style = MaterialTheme.typography.labelLarge,
+                    color = MaterialTheme.colorScheme.primary
+                )
+            }
+
+            LazyColumn(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                items(items = transactions) { transaction ->
+                    TransactionItem(transaction, onTransactionClicked)
+                }
             }
         }
     }
