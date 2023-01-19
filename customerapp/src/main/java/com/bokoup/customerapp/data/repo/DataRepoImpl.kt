@@ -14,6 +14,7 @@ import com.dgsd.ksol.core.model.PublicKey
 import com.dgsd.ksol.core.model.TransactionSignature
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import java.math.BigDecimal
 import java.time.OffsetDateTime
 
 class DataRepoImpl(private val dataService: DataService) : DataRepo {
@@ -92,7 +93,7 @@ class DataRepoImpl(private val dataService: DataService) : DataRepo {
             return null
         }
 
-        val metadataObject = data.mintObject?.promoObject?.metadataObject
+        val metadataObject = data.mintObject.promoObject?.metadataObject
         if (metadataObject == null) {
             return null
         }
@@ -113,8 +114,8 @@ class DataRepoImpl(private val dataService: DataService) : DataRepo {
             merchantName = data.merchantName,
             orderId = data.orderId as? String,
             paymentId = data.paymentId as? String,
-            orderTotal = data.orderTotal as? Int,
-            discountValue = data.discountValue as? Float?,
+            orderTotal = (data.orderTotal as? Float)?.toCurrentBigDecimal(),
+            discountValue = (data.discountValue as? Float)?.toCurrentBigDecimal(),
             timestamp = OffsetDateTime.parse(data.modifiedAt as String),
             tokenInfo = createTokenInfo(mintId, metadataObject)
         )
@@ -131,4 +132,9 @@ class DataRepoImpl(private val dataService: DataService) : DataRepo {
             imageUrl = data.image as String
         )
     }
+
+    private fun Float.toCurrentBigDecimal(): BigDecimal {
+        return toBigDecimal().movePointLeft(2)
+    }
+
 }

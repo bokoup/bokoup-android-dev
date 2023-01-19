@@ -1,6 +1,7 @@
 package com.bokoup.customerapp.ui.transaction
 
 import android.app.Activity
+import android.icu.text.NumberFormat
 import android.text.format.DateUtils
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -152,14 +153,14 @@ fun TransactionContent(
             if (txn.orderTotal != null) {
                 TitleAndValue(
                     title = stringResource(R.string.transaction_details_title_order_total),
-                    value = checkNotNull(txn.orderTotal).toString()
+                    value = NumberFormat.getCurrencyInstance().format(checkNotNull(txn.orderTotal))
                 )
             }
 
             if (txn.discountValue != null) {
                 TitleAndValue(
                     title = stringResource(R.string.transaction_details_title_discount_value),
-                    value = checkNotNull(txn.discountValue).toString()
+                    value = NumberFormat.getCurrencyInstance().format(checkNotNull(txn.discountValue))
                 )
             }
 
