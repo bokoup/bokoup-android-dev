@@ -2,7 +2,9 @@ package com.bokoup.customerapp.dom.repo
 
 import com.bokoup.customerapp.MintByIdQuery
 import com.bokoup.customerapp.TokenAccountListSubscription
+import com.bokoup.customerapp.TradeListingsSubscription
 import com.bokoup.customerapp.dom.model.Address
+import com.bokoup.customerapp.dom.model.BokoupTradeListing
 import com.bokoup.customerapp.dom.model.BokoupTransaction
 import com.bokoup.lib.Resource
 import com.dgsd.ksol.core.model.PublicKey
@@ -22,6 +24,8 @@ interface DataRepo {
     fun getTransactionsByAccount(
         address: Address
     ): Flow<Resource<List<BokoupTransaction>>>
+
+    fun getTradeListings(): Flow<Resource<List<BokoupTradeListing>>>
 
     fun getTransaction(
         transactionSignature: TransactionSignature

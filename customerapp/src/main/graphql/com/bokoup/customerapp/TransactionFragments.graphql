@@ -8,14 +8,6 @@ fragment PromoTransactionFragment on PromoTransactions {
     orderTotal:memo(path:"orderTotal")
     discountValue:memo(path:"discountValue")
     mintObject {
-        id
-        promoObject {
-            metadataObject {
-                id
-                name
-                symbol
-                image: metadataJson(path: "image")
-            }
-        }
+        ...MintInfoFragment
     }
 }

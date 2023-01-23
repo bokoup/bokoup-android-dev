@@ -1,6 +1,5 @@
 package com.bokoup.customerapp.dom.model
 
-import com.dgsd.ksol.core.model.PublicKey
 import com.dgsd.ksol.core.model.TransactionSignature
 import java.math.BigDecimal
 import java.time.OffsetDateTime
@@ -14,7 +13,7 @@ data class BokoupTransaction(
     val orderTotal: BigDecimal?,
     val discountValue: BigDecimal?,
     val type: Type,
-    val tokenInfo: TokenInfo,
+    val tokenInfo: BokoupTokenInfo,
 ) {
 
     enum class Type {
@@ -22,10 +21,4 @@ data class BokoupTransaction(
         REDEEMED
     }
 
-    data class TokenInfo(
-        val address: PublicKey,
-        val name: String,
-        val imageUrl: String,
-        val symbol: String
-    )
 }

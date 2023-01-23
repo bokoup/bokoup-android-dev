@@ -23,7 +23,7 @@
     <string name="biometric_prompt_message">We\'ll securely store your data so only you have access</string>
 
     <string name="create_wallet">Create Wallet</string>
-    <string name="transactions">Transactions</string>
+    <string name="transactions">History</string>
     <string name="transaction_received_description_template">Received %1$s</string>
     <string name="transaction_redeemed_description_template">Redeemed %1$s</string>
 
@@ -43,6 +43,11 @@
     <string name="transaction_details_title_payment_id">Payment ID</string>
     <string name="transaction_details_title_order_total">Order total</string>
     <string name="transaction_details_title_discount_value">Discount value</string>
+    <string name="trading">Trading</string>
+    <string name="trades_empty_message">No trades yet</string>
+    <string name="sell_token">Sell a token</string>
+    <string name="listed_since_template">Listed on %1$s</string>
+    <string name="trading_list_for_sale_title">For Sale</string>
 
     <plurals name="transactions_summary_template">
         <item quantity="one">Received %1$s promo, redeemed %2$s and saved a total of %3$s!</item>

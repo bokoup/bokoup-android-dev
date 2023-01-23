@@ -1,0 +1,12 @@
+subscription TradeListingsSubscription {
+    listingWithToken {
+        id
+        tokenSize
+        seller
+        price
+        createdAtOnChain
+        mintObject {
+            ...MintInfoFragment
+        }
+    }
+}
