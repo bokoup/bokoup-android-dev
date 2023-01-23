@@ -1,6 +1,7 @@
 package com.bokoup.customerapp.ui.transaction
 
 import android.app.Activity
+import android.icu.text.NumberFormat
 import android.text.format.DateUtils
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -103,8 +104,8 @@ fun TransactionContent(
                     modifier = Modifier
                         .size(100.dp)
                         .clickable {
-                        openTokenDetails.invoke(txn.tokenInfo.address)
-                    },
+                            openTokenDetails.invoke(txn.tokenInfo.address)
+                        },
                 )
             }
 
@@ -130,36 +131,51 @@ fun TransactionContent(
                 )
             }
 
-            Spacer(modifier = Modifier.size(16.dp))
-
-            Text(
-                text = stringResource(R.string.transaction_details_title_merchant),
-                style = MaterialTheme.typography.labelLarge,
-            )
-            Spacer(modifier = Modifier.size(4.dp))
-            Text(
-                style = MaterialTheme.typography.bodyLarge,
-                text = txn.merchantName
+            TitleAndValue(
+                title = stringResource(R.string.transaction_details_title_merchant),
+                value = txn.merchantName
             )
 
-            Spacer(modifier = Modifier.size(16.dp))
+            if (txn.orderId != null) {
+                TitleAndValue(
+                    title = stringResource(R.string.transaction_details_title_order_id),
+                    value = checkNotNull(txn.orderId)
+                )
+            }
 
-            Text(
-                text = stringResource(R.string.transaction_details_title_date),
-                style = MaterialTheme.typography.labelLarge,
-            )
-            Spacer(modifier = Modifier.size(4.dp))
-            Text(
-                style = MaterialTheme.typography.bodyLarge,
-                text = DateUtils.formatDateTime(
+            if (txn.paymentId != null) {
+                TitleAndValue(
+                    title = stringResource(R.string.transaction_details_title_payment_id),
+                    value = checkNotNull(txn.paymentId)
+                )
+            }
+
+            if (txn.orderTotal != null) {
+                TitleAndValue(
+                    title = stringResource(R.string.transaction_details_title_order_total),
+                    value = NumberFormat.getCurrencyInstance().format(checkNotNull(txn.orderTotal))
+                )
+            }
+
+            if (txn.discountValue != null) {
+                TitleAndValue(
+                    title = stringResource(R.string.transaction_details_title_discount_value),
+                    value = NumberFormat.getCurrencyInstance().format(checkNotNull(txn.discountValue))
+                )
+            }
+
+            TitleAndValue(
+                title = stringResource(R.string.transaction_details_title_date),
+                value = DateUtils.formatDateTime(
                     LocalContext.current,
                     txn.timestamp.toEpochSecond() * 1000,
                     DateUtils.FORMAT_ABBREV_ALL or
                             DateUtils.FORMAT_SHOW_WEEKDAY or
                             DateUtils.FORMAT_SHOW_DATE or
                             DateUtils.FORMAT_SHOW_TIME
-                ),
+                )
             )
+
 
             Spacer(modifier = Modifier.size(16.dp))
 
@@ -168,7 +184,6 @@ fun TransactionContent(
                 style = MaterialTheme.typography.labelLarge,
             )
             Spacer(modifier = Modifier.size(4.dp))
-
 
             Text(
                 style = MaterialTheme.typography.bodyLarge,
@@ -184,6 +199,24 @@ fun TransactionContent(
             )
         }
     }
+}
+
+@Composable
+private fun TitleAndValue(
+    title: String,
+    value: String,
+) {
+    Spacer(modifier = Modifier.size(16.dp))
+
+    Text(
+        text = title,
+        style = MaterialTheme.typography.labelLarge,
+    )
+    Spacer(modifier = Modifier.size(4.dp))
+    Text(
+        style = MaterialTheme.typography.bodyLarge,
+        text = value
+    )
 }
 
 

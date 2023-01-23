@@ -16,6 +16,7 @@ import com.bokoup.customerapp.ui.scan.ScanScreen
 import com.bokoup.customerapp.ui.share.ShareScreen
 import com.bokoup.customerapp.ui.tokens.TokenDetailScreen
 import com.bokoup.customerapp.ui.tokens.TokensScreen
+import com.bokoup.customerapp.ui.trades.TradesScreen
 import com.bokoup.customerapp.ui.transaction.TransactionScreen
 import com.bokoup.customerapp.ui.transactions.TransactionsScreen
 import com.bokoup.customerapp.ui.wallet.WalletScreen
@@ -45,7 +46,7 @@ fun NavGraph(navController: NavHostController, openDrawer: () -> Unit) {
     }
 
     NavHost(
-        navController = navController, startDestination = Screen.Scan.name
+        navController = navController, startDestination = Screen.Tokens.name
     ) {
         composable(
             route = Screen.Tokens.name
@@ -63,6 +64,17 @@ fun NavGraph(navController: NavHostController, openDrawer: () -> Unit) {
         ) {
             WalletScreen(
                 openDrawer = openDrawer, snackbarHostState = snackbarHostState, channel = channel
+            )
+        }
+        composable(
+            route = Screen.Trades.name
+        ) {
+            TradesScreen(
+                openDrawer = openDrawer,
+                snackbarHostState = snackbarHostState,
+                onTradeListingClicked = {
+                    navController.navigate("${Screen.TokenDetail.name}/${it.tokenInfo.address.toBase58String()}")
+                }
             )
         }
         composable(

@@ -10,6 +10,7 @@ enum class Screen(@StringRes val title: Int) {
     Wallet(title = R.string.wallet),
     Transactions(title = R.string.transactions),
     Transaction(title = R.string.transaction),
+    Trades(title = R.string.trading),
     Share(title = R.string.share),
     Scan(title = R.string.scan),
     Approve(title = R.string.approve),

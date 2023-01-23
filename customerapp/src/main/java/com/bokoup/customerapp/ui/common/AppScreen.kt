@@ -2,10 +2,7 @@ package com.bokoup.customerapp.ui.common
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.RowScope
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarHost
-import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import com.bokoup.customerapp.nav.Screen
 import com.bokoup.customerapp.ui.AppTopBar
@@ -19,7 +16,6 @@ fun AppScreen(
     topBarActions: @Composable (RowScope.() -> Unit) = {},
     content: @Composable (PaddingValues) -> Unit = {},
     floatingActionButton: @Composable (() -> Unit) = {}
-
     ) {
 
     Scaffold(
@@ -31,5 +27,6 @@ fun AppScreen(
             content(padding)
         },
         floatingActionButton = floatingActionButton,
+        floatingActionButtonPosition = FabPosition.End,
     )
 }

@@ -55,6 +55,13 @@ fun AppDrawer(
             modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
         )
         NavigationDrawerItem(
+            label = { Text(stringResource(id = Screen.Trades.title)) },
+            icon = { Icon(Icons.Filled.ShoppingBag, null) },
+            selected = currentRoute == Screen.Trades.name,
+            onClick = { navController.navigate(Screen.Trades.name); closeDrawer() },
+            modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
+        )
+        NavigationDrawerItem(
             label = { Text(stringResource(id = Screen.Share.title)) },
             icon = { Icon(Icons.Filled.Share, null) },
             selected = currentRoute == Screen.Share.name,

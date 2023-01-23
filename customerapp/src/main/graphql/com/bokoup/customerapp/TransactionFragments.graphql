@@ -1,17 +1,13 @@
 fragment PromoTransactionFragment on PromoTransactions {
     signature
     modifiedAt
-    merchantName: promoGroup
     transactionType
+    merchantName: promoGroup
+    orderId:memo(path:"orderId")
+    paymentId:memo(path:"paymentId")
+    orderTotal:memo(path:"orderTotal")
+    discountValue:memo(path:"discountValue")
     mintObject {
-        id
-        promoObject {
-            metadataObject {
-                id
-                name
-                symbol
-                image: metadataJson(path: "image")
-            }
-        }
+        ...MintInfoFragment
     }
 }

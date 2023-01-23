@@ -131,20 +131,22 @@ fun TokenDetailContent(
                     },
             )
 
-            Spacer(modifier = Modifier.size(32.dp))
+            if (transactions.isNotEmpty()) {
+                Spacer(modifier = Modifier.size(32.dp))
 
-            Text(
-                modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp),
-                text = stringResource(R.string.token_details_my_history_title),
-                style = MaterialTheme.typography.titleMedium
-            )
+                Text(
+                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp),
+                    text = stringResource(R.string.token_details_my_history_title),
+                    style = MaterialTheme.typography.titleMedium
+                )
 
-            LazyColumn(
-                modifier = Modifier.weight(1f, fill = true),
-                verticalArrangement = Arrangement.spacedBy(16.dp)
-            ) {
-                items(items = transactions) { transaction ->
-                    TokenDetailTransaction(transaction, onTransactionClicked)
+                LazyColumn(
+                    modifier = Modifier.weight(1f, fill = true),
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    items(items = transactions) { transaction ->
+                        TokenDetailTransaction(transaction, onTransactionClicked)
+                    }
                 }
             }
         }

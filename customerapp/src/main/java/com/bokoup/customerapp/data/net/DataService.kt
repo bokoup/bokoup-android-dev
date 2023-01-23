@@ -2,10 +2,7 @@ package com.bokoup.customerapp.data.net
 
 import com.apollographql.apollo3.ApolloCall
 import com.apollographql.apollo3.ApolloClient
-import com.bokoup.customerapp.MintByIdQuery
-import com.bokoup.customerapp.TokenAccountListSubscription
-import com.bokoup.customerapp.TransactionBySignatureSubscription
-import com.bokoup.customerapp.TransactionsByAccountSubscription
+import com.bokoup.customerapp.*
 import com.bokoup.customerapp.dom.model.Address
 import com.dgsd.ksol.core.model.TransactionSignature
 
@@ -30,6 +27,11 @@ class DataService(
     ): ApolloCall<TransactionsByAccountSubscription.Data> {
         return apolloClient.subscription(TransactionsByAccountSubscription(address.id))
     }
+
+    fun getTradeListings(): ApolloCall<TradeListingsSubscription.Data> {
+        return apolloClient.subscription(TradeListingsSubscription())
+    }
+
 
     fun getTransactionBySignature(
         signature: TransactionSignature,
