@@ -11,7 +11,9 @@ import com.bokoup.lib.QRCodeGenerator
 import com.bokoup.lib.ResourceFlowConsumer
 import com.bokoup.lib.resourceFlowOf
 import com.bokoup.merchantapp.domain.CustomerRepo
+import com.bokoup.merchantapp.model.Constants
 import com.bokoup.merchantapp.model.DelegateMemo
+import com.bokoup.merchantapp.model.Device
 import com.bokoup.merchantapp.model.TokenAccountWithMetadata
 import com.clover.sdk.v3.order.Discount
 import com.clover.sdk.v3.order.Order
@@ -26,7 +28,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CustomerViewModel @Inject constructor(
-    private val qrCodeGenerator: QRCodeGenerator, private val repo: CustomerRepo
+    private val qrCodeGenerator: QRCodeGenerator, private val repo: CustomerRepo, private val constants: Constants
 ) : ViewModel() {
     val qrCodeConsumer = ResourceFlowConsumer<Bitmap>(viewModelScope)
     val delegateTokenSubscription = repo.delegateTokenSubscription
@@ -34,7 +36,7 @@ class CustomerViewModel @Inject constructor(
     fun getQrCode(
         orderId: String,
         tokenAccount: TokenAccountWithMetadata,
-        delegateString: String,
+        device: Device,
         timestamp: Int
     ) = viewModelScope.launch(Dispatchers.IO) {
         val mintString = tokenAccount.tokenAccount.mintObject?.id
@@ -42,10 +44,11 @@ class CustomerViewModel @Inject constructor(
             "Approve to delegate one ${tokenAccount.tokenAccount.mintObject?.promoObject?.metadataObject?.name} token"
         val memo = DelegateMemo(orderId, timestamp, tokenAccount.orderTotal, tokenAccount.discountValue)
         val memoJson = Gson().toJson(memo)
+        val campaign = tokenAccount.campaign
 
         qrCodeConsumer.collectFlow(resourceFlowOf {
             val url = URL(
-                "https://tx.api.bokoup.dev/promo/delegate/$mintString/$delegateString/${
+                "${constants.apiTx}/promo/delegate/$mintString/${device.owner}/${device.device}/${device.location}/$campaign/${
                     withContext(Dispatchers.IO) {
                         URLEncoder.encode(
                             message, "utf-8"

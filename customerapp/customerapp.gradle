@@ -29,12 +29,13 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
-    kotlinOptions {
-        jvmTarget = '1.8'
+    kotlin {
+        jvmToolchain(17)
     }
+
     buildFeatures {
         compose true
         viewBinding true
@@ -57,7 +58,7 @@ dependencies {
     implementation libs.androidx.activity
     implementation libs.androidx.biometrics
     implementation libs.androidx.core
-    implementation libs.androidx.lifecycle
+    implementation libs.androidx.lifecycle.base
     implementation libs.androidx.lifecycle.viewmodel
     implementation libs.androidx.navigation
     implementation libs.androidx.security

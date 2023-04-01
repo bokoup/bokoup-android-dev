@@ -22,8 +22,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 @Composable
 @ExperimentalMaterial3Api
 fun MerchantContent(
-    viewModel: MerchantViewModel = hiltViewModel(),
     modifier: Modifier = Modifier,
+    viewModel: MerchantViewModel = hiltViewModel(),
     padding: PaddingValues,
     orderId: String,
 ) {
@@ -46,12 +46,13 @@ fun MerchantContent(
 
     LaunchedEffect(barcodeResult) {
         if (barcodeResult != null) {
+            Log.d("jingus", "fetched")
             viewModel.fetchEligibleTokenAccounts(barcodeResult!!, orderId)
         }
     }
 
     LaunchedEffect(tokenAccounts) {
-        if (tokenAccounts != null && barcodeResult != null && orderId != null) {
+        if (tokenAccounts != null && barcodeResult != null) {
             viewModel.stopBarcodeScanner()
             viewModel.startCustomActivity(orderId, tokenAccounts!!, barcodeResult!!)
         }

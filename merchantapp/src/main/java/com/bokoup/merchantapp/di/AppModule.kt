@@ -8,16 +8,16 @@ import com.bokoup.lib.QRCodeGenerator
 import com.bokoup.merchantapp.data.CloverDb
 import com.bokoup.merchantapp.data.TenderDao
 import com.bokoup.merchantapp.domain.*
-import com.bokoup.merchantapp.net.DataService
-import com.bokoup.merchantapp.net.OrderService
-import com.bokoup.merchantapp.net.TenderService
-import com.bokoup.merchantapp.net.TransactionService
+import com.bokoup.merchantapp.model.EnvironmentOptions
+import com.bokoup.merchantapp.model.Constants
+import com.bokoup.merchantapp.net.*
 import com.bokoup.merchantapp.ui.customer.NotificationReceiver
 import com.bokoup.merchantapp.ui.merchant.BarCodeReceiver
 import com.clover.cfp.connector.RemoteDeviceConnector
 import com.clover.sdk.util.CloverAccount
 import com.clover.sdk.v1.tender.TenderConnector
 import com.clover.sdk.v3.order.OrderConnector
+import com.clover.sdk.v3.merchant.MerchantDevicesV2Connector
 import com.clover.sdk.v3.scanner.BarcodeScanner
 import com.dgsd.ksol.SolanaApi
 import com.dgsd.ksol.core.LocalTransactions
@@ -72,6 +72,12 @@ class AppModule {
     ) = OrderConnector(context, CloverAccount.getAccount(context), null)
 
     @Provides
+    fun merchantConnector(
+        @ApplicationContext
+        context: Context
+    ) = MerchantDevicesV2Connector(context)
+
+    @Provides
     fun tenderRepository(
         tenderDao: TenderDao,
         tenderService: TenderService,
@@ -100,7 +106,8 @@ class AppModule {
 
     @Provides
     fun solanaApi(
-    ) = SolanaApi(Cluster.Custom("https://api.devnet.solana.com", "wss://api.devnet.solana.com"), OkHttpClient.Builder().apply {
+        constants: Constants
+    ) = SolanaApi(Cluster.Custom(constants.rpcUrl, constants.webSocketUrl), OkHttpClient.Builder().apply {
         addInterceptor(interceptor = HttpLoggingInterceptor().apply {
             level = HttpLoggingInterceptor.Level.BODY
         })
@@ -121,20 +128,27 @@ class AppModule {
 
     @Provides
     fun apolloClient(
+        constants: Constants
     ): ApolloClient = ApolloClient.Builder()
-        .serverUrl("https://data.api.bokoup.dev/v1/graphql")
-        .webSocketServerUrl("https://data.api.bokoup.dev/v1/graphql")
+        .serverUrl(constants.apiData)
+        .webSocketServerUrl(constants.apiData)
         .build()
 
     @Provides
     fun dataService(
-        apolloClient: ApolloClient
-    ): DataService = DataService(apolloClient)
+        apolloClient: ApolloClient,
+        sharedPref: SharedPreferences
+    ): DataService = DataService(apolloClient, sharedPref)
 
     @Provides
     fun orderService(
         connector: OrderConnector
     ) = OrderService(connector)
+
+    @Provides
+    fun merchantService(
+        connector: MerchantDevicesV2Connector
+    ) = MerchantService(connector)
 
     @Provides
     fun promoRepo(
@@ -145,7 +159,6 @@ class AppModule {
         orderService: OrderService,
         solanaApi: SolanaApi,
         localTransactions: LocalTransactions,
-        sharedPref: SharedPreferences
     ): PromoRepo = PromoRepoImpl(
         context,
         dataService,
@@ -153,7 +166,6 @@ class AppModule {
         orderService,
         solanaApi,
         localTransactions,
-        sharedPref
     )
 
     @Provides
@@ -172,7 +184,8 @@ class AppModule {
 
     @Provides
     fun transactionService(
-    ) = TransactionService()
+        constants: Constants
+    ) = TransactionService(constants)
 
     @Provides
     fun remoteDeviceConnector(
@@ -187,10 +200,14 @@ class AppModule {
     @Provides
     fun settingsRepo(
         keyFactory: KeyFactory,
-        sharedPref: SharedPreferences
+        sharedPref: SharedPreferences,
+        merchantService: MerchantService,
+        dataService: DataService
     ): SettingsRepo = SettingsRepoImpl(
         keyFactory,
-        sharedPref
+        sharedPref,
+        merchantService,
+        dataService
     )
 
     @Provides
@@ -199,5 +216,9 @@ class AppModule {
         context: Context
     ): SharedPreferences =
         context.getSharedPreferences("com.bokoup.merchantapp.SETTINGS", Context.MODE_PRIVATE)
+
+    @Provides
+    fun constants(
+    ): Constants = EnvironmentOptions.WORK.get()
 
 }

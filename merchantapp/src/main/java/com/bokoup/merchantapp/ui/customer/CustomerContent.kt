@@ -21,6 +21,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import com.bokoup.merchantapp.R
 import com.bokoup.merchantapp.model.DelegateMemo
+import com.bokoup.merchantapp.model.Device
 import com.bokoup.merchantapp.model.TokenAccountWithMetadata
 import com.clover.sdk.v3.order.Discount
 import com.google.gson.Gson
@@ -31,12 +32,12 @@ import java.text.DecimalFormat
 @Composable
 @ExperimentalMaterial3Api
 fun CustomerContent(
-    viewModel: CustomerViewModel = hiltViewModel(),
     modifier: Modifier = Modifier,
+    viewModel: CustomerViewModel = hiltViewModel(),
     padding: PaddingValues,
     orderId: String,
     tokenAccounts: List<TokenAccountWithMetadata>,
-    delegateString: String,
+    device: Device,
     sendMessage: (String) -> Unit
 ) {
     val activity = (LocalContext.current as? Activity)
@@ -130,7 +131,7 @@ fun CustomerContent(
                                     viewModel.getQrCode(
                                         orderId,
                                         tokenAccount,
-                                        delegateString,
+                                        device,
                                         timestamp.value!!
                                     )
                                 }

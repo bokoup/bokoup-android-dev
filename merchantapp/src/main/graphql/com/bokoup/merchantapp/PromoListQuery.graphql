@@ -1,7 +1,7 @@
-query PromoListQuery {
-  promo {
+query PromoListQuery($deviceOwner: String!, $deviceName: String!) {
+  promo(where: {campaignObject: {campaignLocations: {locationObject: {devices: {}, _and: {devices: {name: {_eq: $deviceName}, owner: {_eq: $deviceOwner}}}}}}}, orderBy: {metadataObject: {name: ASC}}) {
     id
-    owner
+    campaign
     maxMint
     maxBurn
     mintCount

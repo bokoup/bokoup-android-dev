@@ -1,10 +1,16 @@
 query DelegatedTokenQuery($jsonFilter: jsonb, $delegate: String) {
-    delegatePromoToken(where: {memo: {_contains: $jsonFilter}, delegate: {_eq: $delegate}}, limit: 1, orderBy: {createdAt: DESC}) {
+    delegatePromoToken(where: {memo: {_contains: $jsonFilter}, deviceOwner: {_eq: $delegate}}, limit: 1, orderBy: {createdAt: DESC}) {
         signature
         tokenAccount
         tokenAccountObject {
+            mint
             delegatedAmount
             delegate
+            mintObject {
+                promoObject {
+                    campaign
+                }
+            }
         }
         orderId: memo(path: "orderId")
         orderTotal: memo(path: "orderTotal")

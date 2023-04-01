@@ -9,7 +9,6 @@ import com.bokoup.lib.ResourceFlowConsumer
 import com.bokoup.lib.resourceFlowOf
 import com.bokoup.merchantapp.domain.PromoRepo
 import com.bokoup.merchantapp.domain.SettingsRepo
-import com.bokoup.merchantapp.model.AppId
 import com.bokoup.merchantapp.model.PromoType
 import com.bokoup.merchantapp.model.PromoWithMetadata
 import com.bokoup.merchantapp.model.TxApiResponse
@@ -31,10 +30,7 @@ class PromoViewModel @Inject constructor(
 ) : ViewModel() {
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO
 
-    val promoSubscription = promoRepo.promoSubscriptionFlow
-
     val promosConsumer = ResourceFlowConsumer<List<PromoWithMetadata>>(viewModelScope)
-    val appIdConsumer = ResourceFlowConsumer<AppId>(viewModelScope)
     val createPromoConsumer = ResourceFlowConsumer<TxApiResponse>(viewModelScope)
     val groupSeedConsumer = ResourceFlowConsumer<String>(viewModelScope)
     val keyPairConsumer = ResourceFlowConsumer<KeyPair?>(viewModelScope)
@@ -42,7 +38,6 @@ class PromoViewModel @Inject constructor(
 
     val errorConsumer = merge(
         promosConsumer.error,
-        appIdConsumer.error,
         createPromoConsumer.error,
     )
 
@@ -70,20 +65,16 @@ class PromoViewModel @Inject constructor(
 
     }
 
-    fun getGroupSeed() = viewModelScope.launch(dispatcher) {
-        groupSeedConsumer.collectFlow(
-            settingsRepo.getGroupSeed()
-        )
-    }
-
     fun getKeyPair() = viewModelScope.launch(dispatcher) {
         keyPairConsumer.collectFlow(
-            settingsRepo.getKeyPairFlow()
+            resourceFlowOf {
+                settingsRepo.getKeyPair()
+            }
         )
     }
     fun fetchPromos() = viewModelScope.launch(dispatcher) {
         promosConsumer.collectFlow(
-            promoRepo.fetchPromos()
+            promoRepo.fetchPromos(settingsRepo.getDevice())
         )
     }
 
@@ -100,11 +91,4 @@ class PromoViewModel @Inject constructor(
                 promoRepo.signAndSend(transaction, keyPair)
             )
         }
-
-    fun fetchAppId() = viewModelScope.launch(dispatcher) {
-        appIdConsumer.collectFlow(
-            promoRepo.fetchAppId()
-        )
-    }
-
 }

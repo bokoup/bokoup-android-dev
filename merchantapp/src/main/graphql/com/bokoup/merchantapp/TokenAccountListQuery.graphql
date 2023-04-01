@@ -1,5 +1,5 @@
-query TokenAccountListQuery($tokenOwner: String, $groupMember: jsonb) {
-  tokenAccount(where: {owner: {_eq: $tokenOwner}, mintObject: {promoObject: {groupObject: {members: {_contains: $groupMember}}}}}) {
+query TokenAccountListQuery($deviceName: String, $deviceOwner: String, $tokenOwner: String) {
+  tokenAccount(where: {mintObject: {promoObject: {campaignObject: {campaignLocations: {locationObject: {devices: {_and: {name: {_eq: $deviceName}, owner: {_eq: $deviceOwner}}}}}}}}, owner: {_eq: $tokenOwner}}) {
     id
     owner
     amount
@@ -8,7 +8,7 @@ query TokenAccountListQuery($tokenOwner: String, $groupMember: jsonb) {
       id
       promoObject {
         id
-        owner
+        campaign
         maxMint
         maxBurn
         mintCount

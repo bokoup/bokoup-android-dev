@@ -2,11 +2,12 @@ package com.bokoup.merchantapp.domain
 
 import android.content.ContentResolver
 import android.content.Context
-import android.content.SharedPreferences
 import android.net.Uri
 import android.provider.OpenableColumns
 import android.util.Log
 import com.bokoup.lib.resourceFlowOf
+import com.bokoup.merchantapp.PromoListQuery
+import com.bokoup.merchantapp.TokenAccountListQuery
 import com.bokoup.merchantapp.model.*
 import com.bokoup.merchantapp.net.DataService
 import com.bokoup.merchantapp.net.OrderService
@@ -29,12 +30,14 @@ class PromoRepoImpl(
     private val orderService: OrderService,
     private val solanaApi: SolanaApi,
     private val localTransactions: LocalTransactions,
-    private val sharedPref: SharedPreferences
 ) : PromoRepo {
-    override fun fetchPromos() = resourceFlowOf {
-        dataService.fetchPromos().map { p ->
+    override fun fetchPromos(device: Device?) = resourceFlowOf {
+        if (device == null) {
+            emptyList<PromoListQuery.Promo>()
+        }
+        dataService.fetchPromos(device!!.owner, device!!.name).map { p ->
             val attributesMap =
-                JsonParser().parse(Gson().toJson(p.metadataObject?.attributes)).asJsonArray.associate { a ->
+                JsonParser.parseString(Gson().toJson(p.metadataObject?.attributes)).asJsonArray.associate { a ->
                     a.asJsonObject["trait_type"].asString to a.asJsonObject["value"].asString
                 }
             PromoWithMetadata(
@@ -48,22 +51,23 @@ class PromoRepoImpl(
 
     override fun fetchEligibleTokenAccounts(
         tokenOwner: String,
-        orderId: String
+        orderId: String,
+        device: Device?
     ) =
         resourceFlowOf {
-            val publicKeyString = sharedPref.getString(SharedPrefKeys.PublicKeyString.key, "")
-            val key = SharedPrefKeys.PublicKeyString.key
-            checkNotNull(publicKeyString) {"$key does not exist"}
-
+            if (device == null) {
+                emptyList<TokenAccountListQuery.TokenAccount>()
+            }
             val order = orderService.getOrder(orderId)
-            val tokenAccounts = dataService.fetchTokenAccounts(tokenOwner, publicKeyString).map { t ->
+            val tokenAccounts = dataService.fetchTokenAccounts(tokenOwner, device!!.owner, device!!.name).map { t ->
                 val attributesMap =
-                    JsonParser().parse(Gson().toJson(t.mintObject?.promoObject?.metadataObject?.attributes)).asJsonArray.associate { a ->
+                    JsonParser.parseString(Gson().toJson(t.mintObject?.promoObject?.metadataObject?.attributes)).asJsonArray.associate { a ->
                         a.asJsonObject["trait_type"].asString to a.asJsonObject["value"].asString
                     }
                 TokenAccountWithMetadata(
                     tokenAccount = t,
                     name = t.mintObject?.promoObject?.metadataObject?.name.toString(),
+                    campaign = t.mintObject?.promoObject?.campaign.toString(),
                     image = t.mintObject?.promoObject?.metadataObject?.image.toString(),
                     description = t.mintObject?.promoObject?.metadataObject?.description.toString(),
                     attributes = attributesMap

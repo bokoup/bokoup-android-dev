@@ -24,7 +24,7 @@ fun CustomerScreen(
                 padding = it,
                 orderId = customerPayload.orderId,
                 tokenAccounts = customerPayload.tokenAccounts,
-                delegateString = customerPayload.delegateString,
+                device = customerPayload.device,
                 sendMessage = sendMessage
             )
         }

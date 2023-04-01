@@ -41,12 +41,13 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
-    kotlinOptions {
-        jvmTarget = '1.8'
+    kotlin {
+        jvmToolchain(17)
     }
+
     buildFeatures {
         compose true
     }
@@ -72,7 +73,7 @@ dependencies {
     implementation libs.accompanist.placeholder
     implementation libs.androidx.activity
     implementation libs.androidx.core
-    implementation libs.androidx.lifecycle
+    implementation libs.androidx.lifecycle.base
     implementation libs.androidx.lifecycle.viewmodel
     implementation libs.androidx.navigation
     implementation libs.apollo.runtime
@@ -82,7 +83,7 @@ dependencies {
     implementation libs.bundles.material3
     implementation libs.bundles.retrofit
     implementation libs.bundles.room
-    implementation libs.clover
+    implementation libs.clover.base
     implementation libs.clover.cfp
     implementation libs.coil.compose
     implementation libs.kotlin.reflect

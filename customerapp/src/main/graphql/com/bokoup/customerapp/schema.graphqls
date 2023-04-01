@@ -13,171 +13,6 @@ directive @cached(
 ) on QUERY
 
 """
-columns and relationships of "auction_house"
-"""
-type AuctionHouse {
-  auctionHouseFeeAccount: String!
-  auctionHouseTreasury: String!
-  authority: String!
-  bump: Int!
-  canChangeSalePrice: Boolean!
-  createdAt: timestamptz!
-  creator: String!
-  feePayerBump: Int!
-  feeWithdrawalDestination: String!
-  id: String!
-  modifiedAt: timestamptz!
-  requiresSignOff: Boolean!
-  sellerFeeBasisPoints: Int!
-  slot: bigint!
-  treasuryBump: Int!
-  treasuryMint: String!
-  treasuryWithdrawalDestination: String!
-  writeVersion: bigint!
-}
-
-"""
-Boolean expression to filter rows from the table "auction_house". All fields are combined with a logical 'AND'.
-"""
-input AuctionHouseBoolExp {
-  _and: [AuctionHouseBoolExp!]
-  _not: AuctionHouseBoolExp
-  _or: [AuctionHouseBoolExp!]
-  auctionHouseFeeAccount: StringComparisonExp
-  auctionHouseTreasury: StringComparisonExp
-  authority: StringComparisonExp
-  bump: IntComparisonExp
-  canChangeSalePrice: BooleanComparisonExp
-  createdAt: TimestamptzComparisonExp
-  creator: StringComparisonExp
-  feePayerBump: IntComparisonExp
-  feeWithdrawalDestination: StringComparisonExp
-  id: StringComparisonExp
-  modifiedAt: TimestamptzComparisonExp
-  requiresSignOff: BooleanComparisonExp
-  sellerFeeBasisPoints: IntComparisonExp
-  slot: BigintComparisonExp
-  treasuryBump: IntComparisonExp
-  treasuryMint: StringComparisonExp
-  treasuryWithdrawalDestination: StringComparisonExp
-  writeVersion: BigintComparisonExp
-}
-
-"""Ordering options when selecting data from "auction_house"."""
-input AuctionHouseOrderBy {
-  auctionHouseFeeAccount: OrderBy
-  auctionHouseTreasury: OrderBy
-  authority: OrderBy
-  bump: OrderBy
-  canChangeSalePrice: OrderBy
-  createdAt: OrderBy
-  creator: OrderBy
-  feePayerBump: OrderBy
-  feeWithdrawalDestination: OrderBy
-  id: OrderBy
-  modifiedAt: OrderBy
-  requiresSignOff: OrderBy
-  sellerFeeBasisPoints: OrderBy
-  slot: OrderBy
-  treasuryBump: OrderBy
-  treasuryMint: OrderBy
-  treasuryWithdrawalDestination: OrderBy
-  writeVersion: OrderBy
-}
-
-"""
-select columns of table "auction_house"
-"""
-enum AuctionHouseSelectColumn {
-  """column name"""
-  auctionHouseFeeAccount
-
-  """column name"""
-  auctionHouseTreasury
-
-  """column name"""
-  authority
-
-  """column name"""
-  bump
-
-  """column name"""
-  canChangeSalePrice
-
-  """column name"""
-  createdAt
-
-  """column name"""
-  creator
-
-  """column name"""
-  feePayerBump
-
-  """column name"""
-  feeWithdrawalDestination
-
-  """column name"""
-  id
-
-  """column name"""
-  modifiedAt
-
-  """column name"""
-  requiresSignOff
-
-  """column name"""
-  sellerFeeBasisPoints
-
-  """column name"""
-  slot
-
-  """column name"""
-  treasuryBump
-
-  """column name"""
-  treasuryMint
-
-  """column name"""
-  treasuryWithdrawalDestination
-
-  """column name"""
-  writeVersion
-}
-
-"""
-Streaming cursor of the table "auction_house"
-"""
-input AuctionHouseStreamCursorInput {
-  """Stream column input with initial value"""
-  initialValue: AuctionHouseStreamCursorValueInput!
-
-  """cursor ordering"""
-  ordering: CursorOrdering
-}
-
-"""Initial value of the column from where the streaming should start"""
-input AuctionHouseStreamCursorValueInput {
-  auctionHouseFeeAccount: String
-  auctionHouseTreasury: String
-  authority: String
-  bump: Int
-  canChangeSalePrice: Boolean
-  createdAt: timestamptz
-  creator: String
-  feePayerBump: Int
-  feeWithdrawalDestination: String
-  id: String
-  modifiedAt: timestamptz
-  requiresSignOff: Boolean
-  sellerFeeBasisPoints: Int
-  slot: bigint
-  treasuryBump: Int
-  treasuryMint: String
-  treasuryWithdrawalDestination: String
-  writeVersion: bigint
-}
-
-"""
 columns and relationships of "bid_receipt"
 """
 type BidReceipt {
@@ -190,6 +25,9 @@ type BidReceipt {
   createdAtOnChain: bigint!
   id: String!
   metadata: String!
+
+  """An object relationship"""
+  metadataObject: Metadata
   modifiedAt: timestamptz!
   price: bigint!
   purchaseReceipt: String
@@ -217,6 +55,7 @@ input BidReceiptBoolExp {
   createdAtOnChain: BigintComparisonExp
   id: StringComparisonExp
   metadata: StringComparisonExp
+  metadataObject: MetadataBoolExp
   modifiedAt: TimestamptzComparisonExp
   price: BigintComparisonExp
   purchaseReceipt: StringComparisonExp
@@ -239,6 +78,7 @@ input BidReceiptOrderBy {
   createdAtOnChain: OrderBy
   id: OrderBy
   metadata: OrderBy
+  metadataObject: MetadataOrderBy
   modifiedAt: OrderBy
   price: OrderBy
   purchaseReceipt: OrderBy
@@ -876,6 +716,9 @@ type ListingWithToken {
   id: String
   metadata: String
   mint: String
+
+  """An object relationship"""
+  mintObject: Mint
   price: bigint
   seller: String
   slot: bigint
@@ -894,6 +737,7 @@ input ListingWithTokenBoolExp {
   id: StringComparisonExp
   metadata: StringComparisonExp
   mint: StringComparisonExp
+  mintObject: MintBoolExp
   price: BigintComparisonExp
   seller: StringComparisonExp
   slot: BigintComparisonExp
@@ -907,6 +751,7 @@ input ListingWithTokenOrderBy {
   id: OrderBy
   metadata: OrderBy
   mint: OrderBy
+  mintObject: MintOrderBy
   price: OrderBy
   seller: OrderBy
   slot: OrderBy
@@ -986,6 +831,9 @@ type Metadata {
     path: String
   ): jsonb
   mint: String!
+
+  """An object relationship"""
+  mintObject: Mint
   modifiedAt: timestamptz!
   name: String!
   primarySaleHappened: Boolean!
@@ -1017,6 +865,7 @@ input MetadataBoolExp {
   key: StringComparisonExp
   metadataJson: JsonbComparisonExp
   mint: StringComparisonExp
+  mintObject: MintBoolExp
   modifiedAt: TimestamptzComparisonExp
   name: StringComparisonExp
   primarySaleHappened: BooleanComparisonExp
@@ -1043,6 +892,7 @@ input MetadataOrderBy {
   key: OrderBy
   metadataJson: OrderBy
   mint: OrderBy
+  mintObject: MintOrderBy
   modifiedAt: OrderBy
   name: OrderBy
   primarySaleHappened: OrderBy
@@ -2459,29 +2309,6 @@ input promo_variance_order_by {
 
 type query_root {
   """
-  fetch data from the table: "auction_house"
-  """
-  auctionHouse(
-    """distinct select on columns"""
-    distinctOn: [AuctionHouseSelectColumn!]
-
-    """limit the number of rows returned"""
-    limit: Int
-
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-
-    """sort the rows by one or more columns"""
-    orderBy: [AuctionHouseOrderBy!]
-
-    """filter the rows returned"""
-    where: AuctionHouseBoolExp
-  ): [AuctionHouse!]!
-
-  """fetch data from the table: "auction_house" using primary key columns"""
-  auctionHouseByPk(id: String!): AuctionHouse
-
-  """
   fetch data from the table: "bid_receipt"
   """
   bidReceipt(
@@ -2807,43 +2634,6 @@ type query_root {
 }
 
 type subscription_root {
-  """
-  fetch data from the table: "auction_house"
-  """
-  auctionHouse(
-    """distinct select on columns"""
-    distinctOn: [AuctionHouseSelectColumn!]
-
-    """limit the number of rows returned"""
-    limit: Int
-
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-
-    """sort the rows by one or more columns"""
-    orderBy: [AuctionHouseOrderBy!]
-
-    """filter the rows returned"""
-    where: AuctionHouseBoolExp
-  ): [AuctionHouse!]!
-
-  """fetch data from the table: "auction_house" using primary key columns"""
-  auctionHouseByPk(id: String!): AuctionHouse
-
-  """
-  fetch data from the table in a streaming manner: "auction_house"
-  """
-  auctionHouseStream(
-    """maximum number of rows returned in a single batch"""
-    batchSize: Int!
-
-    """cursor to stream the results returned by the query"""
-    cursor: [AuctionHouseStreamCursorInput]!
-
-    """filter the rows returned"""
-    where: AuctionHouseBoolExp
-  ): [AuctionHouse!]!
-
   """
   fetch data from the table: "bid_receipt"
   """
@@ -3492,4 +3282,3 @@ input token_account_variance_order_by {
   slot: OrderBy
   writeVersion: OrderBy
 }
-

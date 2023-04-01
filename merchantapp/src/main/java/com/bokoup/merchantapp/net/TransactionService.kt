@@ -1,6 +1,7 @@
 package com.bokoup.merchantapp.net
 
 import com.bokoup.merchantapp.model.AppId
+import com.bokoup.merchantapp.model.Constants
 import com.bokoup.merchantapp.model.TxApiResponse
 import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
@@ -10,19 +11,19 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.*
 
 
-class TransactionService {
+class TransactionService(private val constants: Constants) {
     private val interceptor = HttpLoggingInterceptor().apply {
         level = HttpLoggingInterceptor.Level.HEADERS
     }
 
-    private val retrofit: Retrofit = Retrofit.Builder().baseUrl("https://tx.api.bokoup.dev")
+    private val retrofit: Retrofit = Retrofit.Builder().baseUrl(this.constants.apiTx)
         .client(OkHttpClient.Builder().apply {addInterceptor(interceptor = interceptor)}.build())
         .addConverterFactory(GsonConverterFactory.create())
         .build()
     val service: PromoService = retrofit.create(PromoService::class.java)
 }
 
-public interface PromoService {
+interface PromoService {
     @GET("promo/create")
     suspend fun getAppId(
     ): AppId
@@ -38,10 +39,14 @@ public interface PromoService {
         @Path("memo") memo: String?
     ): TxApiResponse
 
-    @POST("promo/burn-delegated/{tokenAccount}/{message}/{memo}")
+    @POST("promo/burn-delegated/{mint}/{tokenAccount}/{device}/{location}/{campaign}/{message}/{memo}")
     suspend fun burnDelegated(
         @Body accountData: AccountData,
+        @Path("mint") mint: String,
         @Path("tokenAccount") tokenAccount: String,
+        @Path("device") device: String,
+        @Path("location") location: String,
+        @Path("campaign") campaign: String,
         @Path("message") message: String,
         @Path("memo") memo: String?
     ): TxApiResponse

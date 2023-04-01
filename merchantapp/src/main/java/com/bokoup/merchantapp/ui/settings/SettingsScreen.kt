@@ -18,7 +18,7 @@ fun SettingsScreen(
         screen = Screen.Settings,
         content = {
             SettingsContent(padding = it)
-        }
+        },
     )
 
 }

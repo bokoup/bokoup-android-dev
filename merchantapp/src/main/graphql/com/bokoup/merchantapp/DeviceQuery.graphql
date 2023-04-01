@@ -1,0 +1,6 @@
+query DeviceQuery($deviceOwner: String!, $deviceName: String!) {
+    device(where: {name: {_eq: $deviceName}, owner: {_eq: $deviceOwner}}) {
+        id
+        location
+    }
+}

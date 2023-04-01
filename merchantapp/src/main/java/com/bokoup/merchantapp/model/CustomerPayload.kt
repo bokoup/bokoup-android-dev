@@ -1,3 +1,8 @@
 package com.bokoup.merchantapp.model
 
-data class CustomerPayload(val orderId: String, val tokenAccounts: List<TokenAccountWithMetadata>, val tokenOwner: String, val delegateString: String)
+data class CustomerPayload(
+    val orderId: String,
+    val tokenAccounts: List<TokenAccountWithMetadata>,
+    val tokenOwner: String,
+    val device: Device,
+)

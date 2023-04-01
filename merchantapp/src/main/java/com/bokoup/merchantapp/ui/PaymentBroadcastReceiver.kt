@@ -22,7 +22,7 @@ import javax.inject.Inject
 
 
 @AndroidEntryPoint
-class PaymentBroadcastReceiver : BroadcastReceiver() {
+class PaymentBroadcastReceiver: BroadcastReceiver() {
     @Inject
     lateinit var dataService: DataService
 
@@ -42,21 +42,22 @@ class PaymentBroadcastReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {
         val pendingResult: PendingResult = goAsync()
+
         scope.launch(Dispatchers.IO) {
             try {
+                val device = settingsRepo.getDevice()
+                checkNotNull(device) { "device was null" }
                 val orderId = intent.getStringExtra(Intents.EXTRA_CLOVER_ORDER_ID)
                 val paymentId = intent.getStringExtra(Intents.EXTRA_CLOVER_PAYMENT_ID)
                 Log.d(TAG, "orderId: ${orderId.toString()}, paymentId: ${paymentId.toString()}")
                 checkNotNull(orderId) { "orderId was null" }
                 checkNotNull(paymentId) { "orderId was null" }
-                val delegate = settingsRepo.getPublicKeyString()
-                checkNotNull(delegate) { "PublicKeyString was null" }
-                Log.d(TAG, "delegate: $delegate")
-                val delegatedToken = dataService.fetchDelegatedToken(orderId, delegate)
+
+                val delegatedToken = dataService.fetchDelegatedToken(orderId, device.owner)
                 Log.d(TAG, delegatedToken.toString())
                 if (delegatedToken != null) {
                     val keyPair = settingsRepo.getKeyPair()
-                    checkNotNull(keyPair) { "PublicKeyString was null" }
+                    checkNotNull(keyPair) { "keyPair was null" }
                     val memo = BurnDelegatedMemo(
                         orderId = orderId,
                         orderTotal = delegatedToken.orderTotal as Int,
@@ -65,8 +66,12 @@ class PaymentBroadcastReceiver : BroadcastReceiver() {
                         delegateSignature = delegatedToken.signature
                     )
                     val tx = txService.service.burnDelegated(
-                        AccountData(delegate),
+                        AccountData(device.owner),
+                        delegatedToken.tokenAccountObject!!.mint,
                         delegatedToken.tokenAccount,
+                        device.device,
+                        device.location,
+                        delegatedToken.tokenAccountObject.mintObject!!.promoObject!!.campaign,
                         "burning delegated token",
                         Gson().toJson(memo)
                     )

@@ -26,8 +26,8 @@ import kotlinx.coroutines.channels.Channel
 @Composable
 @ExperimentalMaterial3Api
 fun PromoContent(
-    viewModel: PromoViewModel = hiltViewModel(),
     modifier: Modifier = Modifier,
+    viewModel: PromoViewModel = hiltViewModel(),
     padding: PaddingValues,
     channel: Channel<String>,
     cardState: Boolean,
@@ -37,7 +37,7 @@ fun PromoContent(
     val isLoading by viewModel.isLoadingConsumer.collectAsState(false)
     val error: Throwable? by viewModel.errorConsumer.collectAsState(null)
     val uriHandler = LocalUriHandler.current
-    val promoSubscription by viewModel.promoSubscription.collectAsState(null)
+    val promos by viewModel.promosConsumer.data.collectAsState()
     val qrCode by viewModel.qrCodeConsumer.data.collectAsState()
     val groupSeed by viewModel.groupSeedConsumer.data.collectAsState()
     val keyPair by viewModel.keyPairConsumer.data.collectAsState()
@@ -59,7 +59,7 @@ fun PromoContent(
     }
 
     LaunchedEffect(Unit) {
-        viewModel.getGroupSeed()
+        viewModel.fetchPromos()
         viewModel.getKeyPair()
     }
 
@@ -69,18 +69,18 @@ fun PromoContent(
         }
     }
 
-    LaunchedEffect(promoSubscription) {
+    LaunchedEffect(promos) {
         setMintCardState(false)
     }
 
-    Loading(promoSubscription == null)
+    Loading(promos == null)
 
     Box(
         contentAlignment = Alignment.Center, modifier = Modifier
             .padding(padding)
     ) {
-        if ((promoSubscription?.data?.promo != null) && !isLoading) {
-            val chunks = promoSubscription!!.data!!.promo.chunked(4)
+        if ((promos != null) && !isLoading) {
+            val chunks = promos!!.chunked(4)
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -94,9 +94,9 @@ fun PromoContent(
                     ) {
                         it.map { promo ->
                             val link =
-                                "https://explorer.solana.com/address/" + promo.mintObject?.id + "?cluster=devnet"
+                                "https://explorer.solana.com/address/" + promo.promo.mintObject?.id + "?cluster=devnet"
                             val attributes =
-                                JsonParser().parse(Gson().toJson(promo.metadataObject?.attributes)).asJsonArray.filter {
+                                JsonParser.parseString(Gson().toJson(promo.promo.metadataObject?.attributes)).asJsonArray.filter {
                                     !listOf<String>(
                                         "maxMint",
                                         "maxBurn"
@@ -109,8 +109,8 @@ fun PromoContent(
                                     .padding(8.dp)
                                     .clickable {
                                         viewModel.getQrCode(
-                                            promo.mintObject?.id!!,
-                                            "Approve to receive promo ${promo.metadataObject?.name!!}"
+                                            promo.promo.mintObject?.id!!,
+                                            "Approve to receive promo ${promo.promo.metadataObject?.name!!}"
                                         )
                                         setMintCardState(true)
                                     }
@@ -132,15 +132,15 @@ fun PromoContent(
                                         verticalAlignment = Alignment.CenterVertically
                                     ) {
                                         Text(
-                                            text = promo.metadataObject!!.name,
+                                            text = promo.promo.metadataObject!!.name,
                                             style = MaterialTheme.typography.titleMedium
                                         )
                                         TextButton(onClick = { uriHandler.openUri(link) }) {
-                                            Text(text = promo.mintObject?.id?.slice(0..8) ?: "")
+                                            Text(text = promo.promo.mintObject?.id?.slice(0..8) ?: "")
                                         }
                                     }
                                     AsyncImage(
-                                        model = promo.metadataObject?.image,
+                                        model = promo.promo.metadataObject?.image,
                                         modifier = Modifier
                                             .padding(6.dp)
                                             .width(324.dp),
@@ -153,7 +153,7 @@ fun PromoContent(
                                         horizontalArrangement = Arrangement.Start
                                     ) {
                                         Text(
-                                            text = promo.metadataObject?.description.toString(),
+                                            text = promo.promo.metadataObject?.description.toString(),
                                             style = MaterialTheme.typography.bodySmall
                                         )
                                     }
@@ -176,7 +176,7 @@ fun PromoContent(
                                             style = MaterialTheme.typography.labelMedium
                                         )
                                         Text(
-                                            text = promo.mintCount.toString() + " / " + promo.maxMint.toString(),
+                                            text = promo.promo.mintCount.toString() + " / " + promo.promo.maxMint.toString(),
                                             style = MaterialTheme.typography.bodyMedium
                                         )
                                     }
@@ -191,7 +191,7 @@ fun PromoContent(
                                             style = MaterialTheme.typography.labelMedium
                                         )
                                         Text(
-                                            text = promo.burnCount.toString() + " / " + promo.maxBurn.toString(),
+                                            text = promo.promo.burnCount.toString() + " / " + promo.promo.maxBurn.toString(),
                                             style = MaterialTheme.typography.bodyMedium
                                         )
                                     }
